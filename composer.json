@@ -20,7 +20,10 @@
     "autoload": {
         "psr-4": {
             "Larapie\\Core\\": "src/"
-        }
+        },
+        "files": [
+            "src/Larapie/Core/Support/Helpers/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
