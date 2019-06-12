@@ -1,0 +1,45 @@
+{
+    "name": "larapie/core",
+    "description": "The core of the larapie framework.",
+    "keywords": ["laravel", "larapie", "api", "rest"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Anthony Vancauwenberghe",
+            "email": "anthony.vanc@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "ext-json": "*",
+        "laravel/framework": "~5.8.0|~5.9.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "~3.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Larapie\\Core\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Larapie\\Core\\LarapieServiceProvider"
+            ],
+            "aliases": {
+                "Larapie": "Larapie\\Core\\Support\\Facades\\Larapie"
+            }
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
