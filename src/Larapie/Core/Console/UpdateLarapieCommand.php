@@ -28,12 +28,13 @@ class UpdateLarapieCommand extends Command
     public function handle()
     {
         $this->warn('This will update your packages to the latest version (according to your composer lock) and pull the latest changes.');
-        $proceed = $this->confirm("Do you want to proceed?", false);
+        $proceed = $this->confirm('Do you want to proceed?', false);
 
         if ($proceed) {
             $this->info($this->enableMaintenanceMode());
-            if ($this->option('git'))
+            if ($this->option('git')) {
                 $this->info($this->gitPull());
+            }
             $this->info($this->composerInstall());
             $this->info($this->reloadBootstrap());
             $this->info($this->disableMaintenanceMode());

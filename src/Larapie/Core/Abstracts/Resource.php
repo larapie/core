@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Larapie\Core\Abstracts;
-
 
 use Larapie\Core\Internals\Module;
 
@@ -20,6 +18,7 @@ class Resource
 
     /**
      * File constructor.
+     *
      * @param string $path
      * @param Module $module
      */
@@ -32,7 +31,6 @@ class Resource
 
     protected function boot()
     {
-
     }
 
     /**
@@ -40,7 +38,7 @@ class Resource
      */
     public function getName(): string
     {
-        return basename($this->path, '.' . $this->getExtension());
+        return basename($this->path, '.'.$this->getExtension());
     }
 
     public function getExtension(): string
@@ -76,7 +74,7 @@ class Resource
 
     public function hasPhpExtension()
     {
-        return $this->getExtension() == "php";
+        return $this->getExtension() == 'php';
     }
 
     public function isValid()
@@ -87,11 +85,11 @@ class Resource
     public function toArray()
     {
         return [
-            "path" => $this->getPath(),
-            "directory" => $this->getDirectory(),
-            "name" => $this->getName(),
-            "filename" => $this->getFileName(),
-            "module" => $this->getModule()->getName(),
+            'path'      => $this->getPath(),
+            'directory' => $this->getDirectory(),
+            'name'      => $this->getName(),
+            'filename'  => $this->getFileName(),
+            'module'    => $this->getModule()->getName(),
         ];
     }
 }

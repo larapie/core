@@ -47,6 +47,7 @@ class Module
 
     /**
      * LarapiModule constructor.
+     *
      * @param $name
      */
     public function __construct(string $name, string $path)
@@ -73,17 +74,17 @@ class Module
 
     public function getComposerFilePath()
     {
-        return $this->getPath() . '/composer.json';
+        return $this->getPath().'/composer.json';
     }
 
     public function getNamespace(): string
     {
-        return config('larapie.modules.namespace') . '\\' . $this->getName();
+        return config('larapie.modules.namespace').'\\'.$this->getName();
     }
 
     protected function createResourceCollection(string $subPath, string $type)
     {
-        return ResourceCollection::fromPath($this->getPath() . $subPath, $this, $type);
+        return ResourceCollection::fromPath($this->getPath().$subPath, $this, $type);
     }
 
     /**

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Larapie\Core\Support\Manifest;
-
 
 use Illuminate\Support\Arr;
 use Larapie\Core\Support\Facades\Larapie;
@@ -40,6 +38,4 @@ class PackageManifest extends \Illuminate\Foundation\PackageManifest
             $this->getManifest();
         });
     }
-
-
 }

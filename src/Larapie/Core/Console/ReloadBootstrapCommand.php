@@ -33,5 +33,4 @@ class ReloadBootstrapCommand extends Command
 
         $this->info('Bootstrap reloaded.');
     }
-
 }

@@ -8,7 +8,6 @@ use Larapie\Core\Services\BootstrapService;
 
 class SeedCommand extends \Illuminate\Database\Console\Seeds\SeedCommand
 {
-
     protected $service;
 
     public function __construct(Resolver $resolver, BootstrapService $service)
@@ -24,7 +23,7 @@ class SeedCommand extends \Illuminate\Database\Console\Seeds\SeedCommand
      */
     public function handle()
     {
-        if (! $this->confirmToProceed()) {
+        if (!$this->confirmToProceed()) {
             return;
         }
 
@@ -33,7 +32,7 @@ class SeedCommand extends \Illuminate\Database\Console\Seeds\SeedCommand
         Model::unguarded(function () {
             foreach ($this->service->getSeeders() as $seeder) {
                 $seeder = $this->laravel->make($seeder['fqn']);
-                if (! isset($seeder->enabled) || $seeder->enabled) {
+                if (!isset($seeder->enabled) || $seeder->enabled) {
                     $seeder->__invoke();
                 }
             }
@@ -41,5 +40,4 @@ class SeedCommand extends \Illuminate\Database\Console\Seeds\SeedCommand
 
         $this->info('Database seeding completed successfully.');
     }
-
 }

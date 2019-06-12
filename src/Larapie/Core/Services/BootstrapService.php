@@ -8,7 +8,6 @@
 
 namespace Larapie\Core\Services;
 
-
 use Larapie\Core\Cache\BootstrapCache;
 use Larapie\Core\Collections\ResourceCollection;
 use Larapie\Core\Resources\CommandResource;
@@ -40,8 +39,9 @@ class BootstrapService
 
     public function all(): array
     {
-        if (!$this->isBooted())
+        if (!$this->isBooted()) {
             $this->boot(false);
+        }
 
         return $this->bootstrap;
     }
@@ -52,19 +52,19 @@ class BootstrapService
         foreach (Larapie::getModules() as $module) {
             $bootstrap['commands'] = $this->bootstrapResource($module->getCommands());
             $bootstrap['events'] = $this->bootstrapResource($module->getEvents());
-            $bootstrap['routes'] =  $this->bootstrapResource($module->getRoutes());
-            $bootstrap['configs'] =  $this->bootstrapResource($module->getConfigs());
-            $bootstrap['factories'] =  $this->bootstrapResource($module->getFactories());
-            $bootstrap['migrations'] =  $this->bootstrapResource($module->getMigrations());
-            $bootstrap['models'] =  $this->bootstrapResource($module->getModels());
-            $bootstrap['seeders'] =  $this->bootstrapResource($module->getSeeders());
-            $bootstrap['providers'] =  $this->bootstrapResource($module->getServiceProviders());
+            $bootstrap['routes'] = $this->bootstrapResource($module->getRoutes());
+            $bootstrap['configs'] = $this->bootstrapResource($module->getConfigs());
+            $bootstrap['factories'] = $this->bootstrapResource($module->getFactories());
+            $bootstrap['migrations'] = $this->bootstrapResource($module->getMigrations());
+            $bootstrap['models'] = $this->bootstrapResource($module->getModels());
+            $bootstrap['seeders'] = $this->bootstrapResource($module->getSeeders());
+            $bootstrap['providers'] = $this->bootstrapResource($module->getServiceProviders());
         }
 
         foreach (Larapie::getPackages() as $package) {
-            $bootstrap['commands'] = array_merge($bootstrap['commands'],$this->bootstrapResource($package->getCommands()));
+            $bootstrap['commands'] = array_merge($bootstrap['commands'], $this->bootstrapResource($package->getCommands()));
             $bootstrap['configs'] = array_merge($bootstrap['configs'], $this->bootstrapResource($package->getConfigs()));
-            $bootstrap['providers'] =  array_merge($bootstrap['providers'],$this->bootstrapResource($package->getServiceProviders()));
+            $bootstrap['providers'] = array_merge($bootstrap['providers'], $this->bootstrapResource($package->getServiceProviders()));
         }
 
         return $bootstrap;

@@ -1,6 +1,5 @@
 <?php
 
-
 if (!function_exists('get_short_class_name')) {
     function get_short_class_name($class)
     {
@@ -85,6 +84,7 @@ if (!function_exists('get_class_property')) {
             $reflectionClass = new \ReflectionClass($class);
             $property = $reflectionClass->getProperty($property);
             $property->setAccessible(true);
+
             return $property->getValue($reflectionClass->newInstanceWithoutConstructor());
         } catch (ReflectionException $e) {
             throw $e;
@@ -135,4 +135,3 @@ if (!function_exists('get_class_constants')) {
         return $reflectionClass->getConstants();
     }
 }
-

@@ -6,7 +6,6 @@ use Illuminate\Support\Str;
 
 class LarapieManager
 {
-
     /**
      * @return Module[]
      */
@@ -37,25 +36,30 @@ class LarapieManager
 
     /**
      * @param string $name
+     *
      * @return Module
      */
     public function getModule(string $name): Module
     {
         $name = Str::studly($name);
+
         return new Module($name, $this->getModulePath($name));
     }
 
     /**
      * @param string $name
+     *
      * @return Module
      */
     public function getPackage(string $name): Module
     {
         $name = Str::studly($name);
+
         return new Package($name, $this->getPackagePath($name));
     }
 
-    protected function getFilesFromDirectory($path){
+    protected function getFilesFromDirectory($path)
+    {
         return array_diff(scandir($path), ['..', '.']);
     }
 
@@ -77,20 +81,22 @@ class LarapieManager
 
     /**
      * @param string $module
+     *
      * @return string
      */
     public function getModulePath(string $module): string
     {
-        return self::getModulesBasePath() . '/' . $module;
+        return self::getModulesBasePath().'/'.$module;
     }
 
     /**
      * @param string $package
+     *
      * @return string
      */
     public function getPackagePath(string $package): string
     {
-        return self::getPackagesBasePath() . '/' . $package;
+        return self::getPackagesBasePath().'/'.$package;
     }
 
     /**
