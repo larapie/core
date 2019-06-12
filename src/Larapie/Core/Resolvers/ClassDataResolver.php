@@ -25,6 +25,7 @@ class ClassDataResolver
         }
     }
 
+    //TODO proper resolving without tokenizer (could throw warnings atm)
     protected function resolve($path)
     {
         $fp = fopen($path, 'r');
