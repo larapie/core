@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Larapie\Core\Collections;
-
 
 use Illuminate\Support\Collection;
 use Larapie\Core\Abstracts\ClassResource;
@@ -10,7 +8,6 @@ use Larapie\Core\Internals\Module;
 
 class ResourceCollection extends Collection
 {
-
     /**
      * @var string
      */
@@ -92,10 +89,12 @@ class ResourceCollection extends Collection
             $files = [];
         }
         foreach ($files as $file) {
-            $resource = new $resourceType($path . '/' . $file, $module);
-            if ($resource->isValid())
+            $resource = new $resourceType($path.'/'.$file, $module);
+            if ($resource->isValid()) {
                 $collection->add($resource);
+            }
         }
+
         return $collection;
     }
 
@@ -103,9 +102,11 @@ class ResourceCollection extends Collection
     {
         $classes = [];
         foreach ($this as $resource) {
-            if ($resource instanceof ClassResource)
+            if ($resource instanceof ClassResource) {
                 $classes[] = $resource->getClassName();
+            }
         }
+
         return $classes;
     }
 
@@ -115,8 +116,7 @@ class ResourceCollection extends Collection
         foreach ($this as $resource) {
             $files[] = $resource->getFileName();
         }
+
         return $files;
     }
-
-
 }

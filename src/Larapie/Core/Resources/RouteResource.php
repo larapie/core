@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Larapie\Core\Resources;
 
 use Larapie\Core\Abstracts\Resource;
@@ -9,7 +8,7 @@ class RouteResource extends Resource
 {
     public function getControllerNamespace()
     {
-        return $this->getModule()->getNamespace() . str_replace('/', '\\', config('larapie.resources.controllers'));
+        return $this->getModule()->getNamespace().str_replace('/', '\\', config('larapie.resources.controllers'));
     }
 
     protected function extractDataFromName(int $index): ?string
@@ -36,18 +35,19 @@ class RouteResource extends Resource
     {
         $version = $this->getRouteVersion();
 
-        if ($version === null)
+        if ($version === null) {
             return $this->getRoutePrefix();
+        }
 
-        return $version . '/' . $this->getRoutePrefix();
+        return $version.'/'.$this->getRoutePrefix();
     }
 
     public function toArray()
     {
         return array_merge(parent::toArray(), [
-            "controller_namespace" => $this->getControllerNamespace(),
-            "route_prefix" => $this->getFullPrefix(),
-            "middleware_group" => $this->getMiddlewareGroup()
+            'controller_namespace' => $this->getControllerNamespace(),
+            'route_prefix'         => $this->getFullPrefix(),
+            'middleware_group'     => $this->getMiddlewareGroup(),
         ]);
     }
 }

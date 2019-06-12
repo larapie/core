@@ -30,7 +30,7 @@ class InstallLarapieCommand extends Command
     {
         $this->warn('This will replace you current .env file and reseed the database.');
         $this->warn('Only do this if you are installing larapie for the first time');
-        $proceed = $this->confirm("Do you want to proceed?", false);
+        $proceed = $this->confirm('Do you want to proceed?', false);
 
         if ($proceed) {
             $this->info($this->copyEnvFile());
@@ -73,5 +73,4 @@ class InstallLarapieCommand extends Command
     {
         return $this->call('db:seed');
     }
-
 }

@@ -2,7 +2,6 @@
 
 namespace Larapie\Core\Providers;
 
-
 use App\Foundation\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
@@ -15,12 +14,9 @@ use Larapie\Core\Services\BootstrapService;
  */
 class BootstrapServiceProvider extends ServiceProvider
 {
-
     public function boot()
     {
-
     }
-
 
     public function register()
     {
@@ -36,7 +32,7 @@ class BootstrapServiceProvider extends ServiceProvider
         /* Override the seed command with the larapi custom one */
         $this->overrideSeedCommand($this->app, $service);
 
-        /**
+        /*
          * Register all Module Service providers.
          * Always load at the end so the user has the ability to override certain functionality!
          *
@@ -51,6 +47,7 @@ class BootstrapServiceProvider extends ServiceProvider
         if (!($this->app->environment('production'))) {
             $service->reload();
         }
+
         return $service;
     }
 
@@ -64,10 +61,11 @@ class BootstrapServiceProvider extends ServiceProvider
     protected function registerListeners(array $events)
     {
         foreach ($events as $event) {
-            if (!empty($listeners = $event['listeners']))
+            if (!empty($listeners = $event['listeners'])) {
                 foreach ($listeners as $listener) {
                     Event::listen($event['fqn'], $listener);
                 }
+            }
         }
     }
 
@@ -76,7 +74,7 @@ class BootstrapServiceProvider extends ServiceProvider
         foreach ($routes as $route) {
             if (class_exists(config('larapie.providers.routing'))) {
                 $provider = new RouteServiceProvider($this->app);
-                $method = 'map' . ucfirst(strtolower($route['middleware_group']) . 'Routes');
+                $method = 'map'.ucfirst(strtolower($route['middleware_group']).'Routes');
 
                 if (method_exists($provider, $method)) {
                     $provider->$method($route['route_prefix'], $route['path'], $route['controller_namespace']);
@@ -88,7 +86,6 @@ class BootstrapServiceProvider extends ServiceProvider
                 ->namespace($route['controller_namespace'])
                 ->group($route['path']);
         }
-
     }
 
     /**
@@ -117,7 +114,7 @@ class BootstrapServiceProvider extends ServiceProvider
             if (!$this->app->environment('production')) {
                 $factoryClass = app(\Illuminate\Database\Eloquent\Factory::class);
                 $factoryClass->load($factory['directory']);
-                $qsdg  = "";
+                $qsdg = '';
             }
         }
     }

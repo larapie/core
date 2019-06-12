@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Larapie\Core\Cache;
-
 
 class BootstrapCache
 {
@@ -13,7 +11,7 @@ class BootstrapCache
 
     public static function put($data): void
     {
-        file_put_contents(self::getCachePath(), '<?php return ' . var_export($data, true) . ';');
+        file_put_contents(self::getCachePath(), '<?php return '.var_export($data, true).';');
     }
 
     public static function forget()
@@ -28,6 +26,6 @@ class BootstrapCache
 
     protected static function getCachePath()
     {
-        return app()->bootstrapPath() . config('larapie.bootstrap_path');
+        return app()->bootstrapPath().config('larapie.bootstrap_path');
     }
 }

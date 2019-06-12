@@ -1,15 +1,12 @@
 <?php
 
-
 namespace Larapie\Core\Resources;
-
 
 use Larapie\Core\Abstracts\ClassResource;
 use Larapie\Core\Larapie\Core\Contracts\Listeners;
 
 class EventResource extends ClassResource
 {
-
     protected $listeners;
 
     protected function boot()
@@ -21,6 +18,7 @@ class EventResource extends ClassResource
     public function extractListeners()
     {
         $listeners = [];
+
         try {
             if (class_implements_interface($this->getFQN(), Listeners::class)) {
                 $listenerClasses = call_class_function($this->getFQN(), 'registerListeners');
@@ -34,6 +32,7 @@ class EventResource extends ClassResource
                 $listeners[] = $listenerClass;
             }
         }
+
         return $listeners;
     }
 
@@ -47,6 +46,6 @@ class EventResource extends ClassResource
 
     public function toArray()
     {
-        return array_merge(parent::toArray(), ["listeners" => $this->getListeners()]);
+        return array_merge(parent::toArray(), ['listeners' => $this->getListeners()]);
     }
 }

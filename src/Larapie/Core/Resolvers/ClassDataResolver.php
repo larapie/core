@@ -1,11 +1,8 @@
 <?php
 
-
 namespace Larapie\Core\Resolvers;
 
-
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Whoops\Exception\ErrorException;
 
 class ClassDataResolver
 {
@@ -15,13 +12,13 @@ class ClassDataResolver
 
     public function __construct(string $path)
     {
-        if (!file_exists($path))
+        if (!file_exists($path)) {
             throw new FileNotFoundException();
+        }
 
         try {
             @$this->resolve($path);
         } catch (\Throwable $e) {
-
         }
     }
 
@@ -32,19 +29,23 @@ class ClassDataResolver
         $class = $namespace = $buffer = '';
         $i = 0;
         while (!$class) {
-            if (feof($fp)) break;
+            if (feof($fp)) {
+                break;
+            }
 
             $buffer .= fread($fp, 512);
             $tokens = token_get_all($buffer);
 
-            if (strpos($buffer, '{') === false) continue;
+            if (strpos($buffer, '{') === false) {
+                continue;
+            }
 
             for (; $i < count($tokens); $i++) {
                 if ($tokens[$i][0] === T_NAMESPACE) {
                     for ($j = $i + 1; $j < count($tokens); $j++) {
                         if ($tokens[$j][0] === T_STRING) {
-                            $namespace .= '\\' . $tokens[$j][1];
-                        } else if ($tokens[$j] === '{' || $tokens[$j] === ';') {
+                            $namespace .= '\\'.$tokens[$j][1];
+                        } elseif ($tokens[$j] === '{' || $tokens[$j] === ';') {
                             break;
                         }
                     }
@@ -78,6 +79,4 @@ class ClassDataResolver
     {
         return $this->namespace;
     }
-
-
 }

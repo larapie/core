@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Larapie\Core;
 
 use Illuminate\Filesystem\Filesystem;
@@ -15,13 +14,11 @@ use Larapie\Core\Support\Facades\Larapie;
 
 class LarapieServiceProvider extends ServiceProvider
 {
-
     protected $commands = [
         InstallLarapieCommand::class,
         UpdateLarapieCommand::class,
-        ReloadBootstrapCommand::class
+        ReloadBootstrapCommand::class,
     ];
-
 
     /**
      * Bootstrap any application services.
@@ -32,7 +29,6 @@ class LarapieServiceProvider extends ServiceProvider
     {
         $this->publishConfig();
     }
-
 
     /**
      * Register any application services.
@@ -52,7 +48,7 @@ class LarapieServiceProvider extends ServiceProvider
     public function overridePackageManifest()
     {
         $this->app->instance(PackageManifest::class, new Support\Manifest\PackageManifest(
-            new Filesystem, $this->app->basePath(), $this->app->getCachedPackagesPath()
+            new Filesystem(), $this->app->basePath(), $this->app->getCachedPackagesPath()
         ));
     }
 
@@ -62,18 +58,18 @@ class LarapieServiceProvider extends ServiceProvider
             return new LarapieManager();
         });
 
-        $this->app->alias("larapie", Larapie::class);
+        $this->app->alias('larapie', Larapie::class);
     }
 
     public function registerConfig()
     {
-        $this->mergeConfigFrom(__DIR__ . '/Config/larapie.php', 'larapie');
+        $this->mergeConfigFrom(__DIR__.'/Config/larapie.php', 'larapie');
     }
 
     public function publishConfig()
     {
         $this->publishes([
-            __DIR__ . '/Config/larapie.php' => config_path('larapie.php'),
+            __DIR__.'/Config/larapie.php' => config_path('larapie.php'),
         ]);
     }
 

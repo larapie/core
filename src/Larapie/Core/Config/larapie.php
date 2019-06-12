@@ -24,8 +24,8 @@ return [
     */
 
     'modules' => [
-        'path' => env('MODULES_PATH', 'app/Modules'),
-        'namespace' => env('MODULES_NAMESPACE', '\\App\\Modules')
+        'path'      => env('MODULES_PATH', 'app/Modules'),
+        'namespace' => env('MODULES_NAMESPACE', '\\App\\Modules'),
     ],
 
     /*
@@ -38,8 +38,8 @@ return [
     */
 
     'foundation' => [
-        'path' => env('FOUNDATION_PATH', 'app/Foundation'),
-        'namespace' => env('FOUNDATION_NAMESPACE', '\\App\\Foundation')
+        'path'      => env('FOUNDATION_PATH', 'app/Foundation'),
+        'namespace' => env('FOUNDATION_NAMESPACE', '\\App\\Foundation'),
     ],
 
     /*
@@ -52,8 +52,8 @@ return [
     */
 
     'packages' => [
-        'path' => env('PACKAGES_PATH', 'app/Packages'),
-        'namespace' => env('PACKAGES_NAMESPACE', '\\App\\Packages')
+        'path'      => env('PACKAGES_PATH', 'app/Packages'),
+        'namespace' => env('PACKAGES_NAMESPACE', '\\App\\Packages'),
     ],
 
     /*
@@ -66,32 +66,32 @@ return [
     */
 
     'resources' => [
-        'Actions' => '/Actions',
-        'Attributes' => '/Attributes',
-        'commands' => '/Console',
-        'configs' => '/Config',
-        'controllers' => '/Http/Controllers',
-        'contracts' => '/Contracts',
-        'events' => '/Events',
-        'factories' => '/Database/Factories',
-        'listeners' => '/Listeners',
-        'middleware' => '/Http/Middleware',
-        'migrations' => '/Database/Migrations',
-        'models' => '/Models',
+        'Actions'       => '/Actions',
+        'Attributes'    => '/Attributes',
+        'commands'      => '/Console',
+        'configs'       => '/Config',
+        'controllers'   => '/Http/Controllers',
+        'contracts'     => '/Contracts',
+        'events'        => '/Events',
+        'factories'     => '/Database/Factories',
+        'listeners'     => '/Listeners',
+        'middleware'    => '/Http/Middleware',
+        'migrations'    => '/Database/Migrations',
+        'models'        => '/Models',
         'notifications' => '/Notifications',
-        'observers' => '/Observers',
-        'policies' => '/Policies',
-        'permissions' => '/Permissions',
-        'providers' => '/Providers',
-        'requests' => '/Requests',
-        'rules' => '/Rules',
-        'repositories' => '/Repositories',
-        'routes' => '/Routes',
-        'seeders' => '/Database/Seeders',
-        'services' => '/Services',
-        'transformers' => '/Transformers',
-        'tests' => '/Tests',
-        'resources' => '/Resources'
+        'observers'     => '/Observers',
+        'policies'      => '/Policies',
+        'permissions'   => '/Permissions',
+        'providers'     => '/Providers',
+        'requests'      => '/Requests',
+        'rules'         => '/Rules',
+        'repositories'  => '/Repositories',
+        'routes'        => '/Routes',
+        'seeders'       => '/Database/Seeders',
+        'services'      => '/Services',
+        'transformers'  => '/Transformers',
+        'tests'         => '/Tests',
+        'resources'     => '/Resources',
     ],
 
     /*
@@ -104,6 +104,6 @@ return [
     */
 
     'providers' => [
-        'routing' => \App\Foundation\Providers\RouteServiceProvider::class
+        'routing' => \App\Foundation\Providers\RouteServiceProvider::class,
     ],
 ];
