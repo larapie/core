@@ -51,7 +51,7 @@ class LarapieServiceProvider extends ServiceProvider
 
     public function overridePackageManifest()
     {
-        $this->app->instance(PackageManifest::class, new \Larapie\Core\Support\Manifest\PackageManifest(
+        $this->app->instance(PackageManifest::class, new Support\Manifest\PackageManifest(
             new Filesystem, $this->app->basePath(), $this->app->getCachedPackagesPath()
         ));
     }
@@ -67,7 +67,7 @@ class LarapieServiceProvider extends ServiceProvider
 
     public function registerConfig()
     {
-        $this->mergeConfigFrom(base_path('Larapie/Core/Config/larapie.php'), 'larapie');
+        $this->mergeConfigFrom(__DIR__ . '/Config/larapie.php', 'larapie');
     }
 
     public function publishConfig()
