@@ -3,6 +3,7 @@
 namespace Larapie\Core\Console;
 
 use Illuminate\Console\Command;
+use Larapie\Core\LarapieServiceProvider;
 
 class InstallLarapieCommand extends Command
 {
@@ -36,6 +37,7 @@ class InstallLarapieCommand extends Command
             $this->info($this->installMergePlugin());
             $this->info($this->composerInstall());
             $this->info($this->generateAppKey());
+            $this->info($this->publishAssets());
             $this->info($this->seedDatabase());
         }
     }
@@ -53,6 +55,13 @@ class InstallLarapieCommand extends Command
     public function installMergePlugin()
     {
         return exec('composer require wikimedia/composer-merge-plugin');
+    }
+
+    public function publishAssets()
+    {
+        $this->call('vendor:publish', [
+            '--provider' => LarapieServiceProvider::class,
+        ]);
     }
 
     public function composerInstall()
