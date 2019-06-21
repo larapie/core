@@ -62,9 +62,9 @@ class BootstrapService implements Bootstrapping
         }
 
         foreach (Larapie::getPackages() as $package) {
-            $bootstrap['commands'] = array_merge($bootstrap['commands'], $this->bootstrapResource($package->getCommands()));
-            $bootstrap['configs'] = array_merge($bootstrap['configs'], $this->bootstrapResource($package->getConfigs()));
-            $bootstrap['providers'] = array_merge($bootstrap['providers'], $this->bootstrapResource($package->getServiceProviders()));
+            $bootstrap['commands'] = array_merge($bootstrap['commands'] ?? [], $this->bootstrapResource($package->getCommands()));
+            $bootstrap['configs'] = array_merge($bootstrap['configs'] ?? [], $this->bootstrapResource($package->getConfigs()));
+            $bootstrap['providers'] = array_merge($bootstrap['providers'] ?? [], $this->bootstrapResource($package->getServiceProviders()));
         }
 
         return $bootstrap;

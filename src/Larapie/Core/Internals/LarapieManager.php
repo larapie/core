@@ -42,20 +42,28 @@ class LarapieManager
     public function getModule(string $name): Module
     {
         $name = Str::studly($name);
+        $modules = $this->getModules();
 
-        return new Module($name, $this->getModulePath($name));
+        if (array_key_exists($name, $modules))
+            return $modules[$name];
+
+        return null;
     }
 
     /**
      * @param string $name
      *
-     * @return Module
+     * @return Package
      */
-    public function getPackage(string $name): Module
+    public function getPackage(string $name): Package
     {
         $name = Str::studly($name);
+        $packages = $this->getPackages();
 
-        return new Package($name, $this->getPackagePath($name));
+        if (array_key_exists($name, $packages))
+            return $packages[$name];
+
+        return null;
     }
 
     protected function getFilesFromDirectory($path)
@@ -86,7 +94,7 @@ class LarapieManager
      */
     public function getModulePath(string $module): string
     {
-        return self::getModulesBasePath().'/'.$module;
+        return self::getModulesBasePath() . '/' . $module;
     }
 
     /**
@@ -96,7 +104,7 @@ class LarapieManager
      */
     public function getPackagePath(string $package): string
     {
-        return self::getPackagesBasePath().'/'.$package;
+        return self::getPackagesBasePath() . '/' . $package;
     }
 
     /**
