@@ -44,8 +44,9 @@ class LarapieManager
         $name = Str::studly($name);
         $modules = $this->getModules();
 
-        if (array_key_exists($name, $modules))
+        if (array_key_exists($name, $modules)) {
             return $modules[$name];
+        }
 
         return null;
     }
@@ -53,12 +54,14 @@ class LarapieManager
     protected function createModule($name): Module
     {
         $name = Str::studly($name);
+
         return new Module($name, $this->getModulePath($name));
     }
 
     protected function createPackage($name): Package
     {
         $name = Str::studly($name);
+
         return new Package($name, $this->getPackagePath($name));
     }
 
@@ -72,8 +75,9 @@ class LarapieManager
         $name = Str::studly($name);
         $packages = $this->getPackages();
 
-        if (array_key_exists($name, $packages))
+        if (array_key_exists($name, $packages)) {
             return $packages[$name];
+        }
 
         return null;
     }
@@ -106,7 +110,7 @@ class LarapieManager
      */
     public function getModulePath(string $module): string
     {
-        return self::getModulesBasePath() . '/' . $module;
+        return self::getModulesBasePath().'/'.$module;
     }
 
     /**
@@ -116,7 +120,7 @@ class LarapieManager
      */
     public function getPackagePath(string $package): string
     {
-        return self::getPackagesBasePath() . '/' . $package;
+        return self::getPackagesBasePath().'/'.$package;
     }
 
     /**
