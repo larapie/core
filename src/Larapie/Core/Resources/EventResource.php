@@ -3,7 +3,7 @@
 namespace Larapie\Core\Resources;
 
 use Larapie\Core\Abstracts\ClassResource;
-use Larapie\Core\Larapie\Core\Contracts\Listeners;
+use Larapie\Core\Contracts\Observers;
 
 class EventResource extends ClassResource
 {
@@ -20,8 +20,8 @@ class EventResource extends ClassResource
         $listeners = [];
 
         try {
-            if (class_implements_interface($this->getFQN(), Listeners::class)) {
-                $listenerClasses = call_class_function($this->getFQN(), 'registerListeners');
+            if (class_implements_interface($this->getFQN(), Observers::class)) {
+                $listenerClasses = call_class_function($this->getFQN(), 'listeners');
             }
         } catch (\Throwable $exception) {
             $listenerClasses = [];

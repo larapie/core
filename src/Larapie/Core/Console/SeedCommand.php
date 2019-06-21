@@ -4,13 +4,13 @@ namespace Larapie\Core\Console;
 
 use Illuminate\Database\ConnectionResolverInterface as Resolver;
 use Illuminate\Database\Eloquent\Model;
-use Larapie\Core\Services\BootstrapService;
+use Larapie\Core\Larapie\Core\Contracts\Bootstrapping;
 
 class SeedCommand extends \Illuminate\Database\Console\Seeds\SeedCommand
 {
     protected $service;
 
-    public function __construct(Resolver $resolver, BootstrapService $service)
+    public function __construct(Resolver $resolver, Bootstrapping $service)
     {
         parent::__construct($resolver);
         $this->service = $service;

@@ -2,14 +2,14 @@
 
 namespace Larapie\Core;
 
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Foundation\PackageManifest;
 use Illuminate\Support\ServiceProvider;
+use Larapie\Core\Console\CacheBootstrapCommand;
 use Larapie\Core\Console\InstallLarapieCommand;
-use Larapie\Core\Console\ReloadBootstrapCommand;
 use Larapie\Core\Console\UpdateLarapieCommand;
 use Larapie\Core\Internals\LarapieManager;
+use Larapie\Core\Larapie\Core\Contracts\Bootstrapping;
 use Larapie\Core\Providers\BootstrapServiceProvider;
+use Larapie\Core\Services\BootstrapService;
 use Larapie\Core\Support\Facades\Larapie;
 
 class LarapieServiceProvider extends ServiceProvider
@@ -17,7 +17,7 @@ class LarapieServiceProvider extends ServiceProvider
     protected $commands = [
         InstallLarapieCommand::class,
         UpdateLarapieCommand::class,
-        ReloadBootstrapCommand::class,
+        CacheBootstrapCommand::class,
     ];
 
     /**
@@ -40,16 +40,9 @@ class LarapieServiceProvider extends ServiceProvider
         $this->registerLarapieAlias();
         $this->registerConfig();
         $this->registerCommands();
-        $this->overridePackageManifest();
 
+        $this->registerBootstrapService();
         $this->registerBootstrapServiceProvider();
-    }
-
-    public function overridePackageManifest()
-    {
-        $this->app->instance(PackageManifest::class, new Support\Manifest\PackageManifest(
-            new Filesystem(), $this->app->basePath(), $this->app->getCachedPackagesPath()
-        ));
     }
 
     public function registerLarapieAlias()
@@ -71,6 +64,13 @@ class LarapieServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/Config/larapie.php' => config_path('larapie.php'),
         ]);
+    }
+
+    protected function registerBootstrapService()
+    {
+        $this->app->singleton(Bootstrapping::class, function ($app) {
+            return new BootstrapService();
+        });
     }
 
     protected function registerBootstrapServiceProvider()

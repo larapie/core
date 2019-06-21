@@ -2,12 +2,14 @@
 
 namespace Larapie\Core\Providers;
 
-use App\Foundation\Providers\RouteServiceProvider;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Foundation\PackageManifest;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Larapie\Core\Console\SeedCommand;
-use Larapie\Core\Services\BootstrapService;
+use Larapie\Core\Larapie\Core\Contracts\Bootstrapping;
 
 /**
  * Class BootstrapServiceProvider.
@@ -28,9 +30,25 @@ class BootstrapServiceProvider extends ServiceProvider
         $this->registerMigrations($service->getMigrations());
         $this->registerConfigs($service->getConfigs());
         $this->registerFactories($service->getFactories());
+        $this->registerPolicies($service->getModels());
+        $this->registerObservers($service->getModels());
 
-        /* Override the seed command with the larapi custom one */
+
+        /*
+         * Override the seed command with the larapi custom one.
+         * This ensures that the seeders from all modules are triggered.
+         *
+         */
         $this->overrideSeedCommand($this->app, $service);
+
+
+        /*
+         * Override the package manifest with the larapi custom one.
+         * This ensures that the laravel extras in the composer json's are read for all modules
+         *
+         */
+        $this->overridePackageManifest($this->app);
+
 
         /*
          * Register all Module Service providers.
@@ -40,12 +58,12 @@ class BootstrapServiceProvider extends ServiceProvider
         $this->registerServiceProviders($service->getProviders());
     }
 
-    protected function loadService()
+    protected function loadService(): Bootstrapping
     {
-        $service = new BootstrapService();
+        $service = $this->app->make(Bootstrapping::class);
 
         if (!($this->app->environment('production'))) {
-            $service->reload();
+            $service->cache();
         }
 
         return $service;
@@ -69,22 +87,49 @@ class BootstrapServiceProvider extends ServiceProvider
         }
     }
 
+    protected function registerObservers(array $models)
+    {
+        foreach ($models as $model) {
+            if (!empty($observers = $model['observers'])) {
+                foreach ($observers as $observer) {
+                    $modelClass = $model['fqn'];
+                    $modelClass::observe($observer);
+                }
+            }
+        }
+    }
+
+    protected function registerPolicies(array $models)
+    {
+        foreach ($models as $model) {
+            if (($policy = $model['policy']) !== null) {
+                Gate::policy($model['fqn'], $policy);
+            }
+        }
+    }
+
     protected function registerRoutes(array $routes)
     {
         foreach ($routes as $route) {
-            if (class_exists(config('larapie.providers.routing'))) {
-                $provider = new RouteServiceProvider($this->app);
-                $method = 'map'.ucfirst(strtolower($route['middleware_group']).'Routes');
+            if (class_exists($providerClass = config('larapie.providers.routing')) && ($middleware = $route['middleware_group']) !== null) {
+                $provider = new $providerClass($this->app);
+                $method = 'map' . ucfirst(strtolower($route['middleware_group']) . 'Routes');
 
                 if (method_exists($provider, $method)) {
                     $provider->$method($route['route_prefix'], $route['path'], $route['controller_namespace']);
                     continue;
                 }
             }
-            Route::prefix($route['route_prefix'])
-                ->middleware($route['middleware_group'])
-                ->namespace($route['controller_namespace'])
-                ->group($route['path']);
+
+            $routes = Route::prefix($route['route_prefix']);
+
+            if ($middleware !== null)
+                $routes->middleware($route['middleware_group']);
+
+            if (($controller = $route['controller_namespace']) !== null)
+                $routes->namespace($controller);
+
+            $routes->group($route['path']);
         }
     }
 
@@ -114,7 +159,6 @@ class BootstrapServiceProvider extends ServiceProvider
             if (!$this->app->environment('production')) {
                 $factoryClass = app(\Illuminate\Database\Eloquent\Factory::class);
                 $factoryClass->load($factory['directory']);
-                $qsdg = '';
             }
         }
     }
@@ -138,10 +182,17 @@ class BootstrapServiceProvider extends ServiceProvider
         }
     }
 
-    protected function overrideSeedCommand(\Illuminate\Contracts\Foundation\Application $app, BootstrapService $service)
+    protected function overrideSeedCommand(\Illuminate\Contracts\Foundation\Application $app, Bootstrapping $service)
     {
         $app->extend('command.seed', function () use ($app, $service) {
             return new SeedCommand($app['db'], $service);
         });
+    }
+
+    public function overridePackageManifest(\Illuminate\Contracts\Foundation\Application $app)
+    {
+        $app->instance(PackageManifest::class, new \Larapie\Core\Support\Manifest\PackageManifest(
+            new Filesystem(), $app->basePath(), $app->getCachedPackagesPath()
+        ));
     }
 }

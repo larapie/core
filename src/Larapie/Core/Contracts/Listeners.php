@@ -9,5 +9,5 @@ interface Listeners
      *
      * @return string[]
      */
-    public function registerListeners(): array;
+    public function listeners(): array;
 }

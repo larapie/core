@@ -5,7 +5,7 @@ namespace Larapie\Core\Console;
 use Illuminate\Console\Command;
 use Larapie\Core\Services\BootstrapService;
 
-class ReloadBootstrapCommand extends Command
+class CacheBootstrapCommand extends Command
 {
     /**
      * The console command name.
@@ -29,7 +29,7 @@ class ReloadBootstrapCommand extends Command
     public function handle()
     {
         $service = new BootstrapService();
-        $service->reload();
+        $service->cache();
 
         $this->info('Bootstrap reloaded.');
     }

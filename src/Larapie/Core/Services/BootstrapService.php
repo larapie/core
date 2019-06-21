@@ -10,10 +10,10 @@ namespace Larapie\Core\Services;
 
 use Larapie\Core\Cache\BootstrapCache;
 use Larapie\Core\Collections\ResourceCollection;
-use Larapie\Core\Resources\CommandResource;
+use Larapie\Core\Larapie\Core\Contracts\Bootstrapping;
 use Larapie\Core\Support\Facades\Larapie;
 
-class BootstrapService
+class BootstrapService implements Bootstrapping
 {
     protected $bootstrap;
 
@@ -22,11 +22,11 @@ class BootstrapService
         if ($fromCache && ($bootstrap = BootstrapCache::get()) !== null) {
             $this->bootstrap = $bootstrap;
         } else {
-            $this->reload();
+            $this->cache();
         }
     }
 
-    public function reload()
+    public function cache()
     {
         $this->bootstrap = $this->bootstrap();
         BootstrapCache::put($this->bootstrap);
@@ -73,13 +73,6 @@ class BootstrapService
     protected function bootstrapResource(ResourceCollection $commands)
     {
         return $commands->map(function ($item, $key) {
-            return $item->toArray();
-        })->all();
-    }
-
-    protected function bootstrapCommands(ResourceCollection $commands)
-    {
-        return $commands->map(function (CommandResource $item) {
             return $item->toArray();
         })->all();
     }
