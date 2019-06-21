@@ -7,14 +7,14 @@ use Illuminate\Console\Command;
 /**
  * Class DatabaseResetCommand.
  */
-class DatabaseResetCommand extends Command
+class ResetDatabaseCommand extends Command
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $signature = 'larapie:reset';
+    protected $signature = 'db:reset';
 
     /**
      * The console command description.

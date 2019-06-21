@@ -5,6 +5,7 @@ namespace Larapie\Core;
 use Illuminate\Support\ServiceProvider;
 use Larapie\Core\Console\CacheBootstrapCommand;
 use Larapie\Core\Console\InstallLarapieCommand;
+use Larapie\Core\Console\ResetDatabaseCommand;
 use Larapie\Core\Console\UpdateLarapieCommand;
 use Larapie\Core\Internals\LarapieManager;
 use Larapie\Core\Larapie\Core\Contracts\Bootstrapping;
@@ -18,6 +19,7 @@ class LarapieServiceProvider extends ServiceProvider
         InstallLarapieCommand::class,
         UpdateLarapieCommand::class,
         CacheBootstrapCommand::class,
+        ResetDatabaseCommand::class
     ];
 
     /**
