@@ -39,7 +39,7 @@ class LarapieManager
      *
      * @return Module
      */
-    public function getModule(string $name): Module
+    public function getModule(string $name): ?Module
     {
         $name = Str::studly($name);
         $modules = $this->getModules();
@@ -50,13 +50,13 @@ class LarapieManager
         return null;
     }
 
-    protected function createModule($name)
+    protected function createModule($name): Module
     {
         $name = Str::studly($name);
         return new Module($name, $this->getModulePath($name));
     }
 
-    protected function createPackage($name)
+    protected function createPackage($name): Package
     {
         $name = Str::studly($name);
         return new Package($name, $this->getPackagePath($name));
@@ -67,7 +67,7 @@ class LarapieManager
      *
      * @return Package
      */
-    public function getPackage(string $name): Package
+    public function getPackage(string $name): ?Package
     {
         $name = Str::studly($name);
         $packages = $this->getPackages();
