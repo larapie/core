@@ -14,7 +14,7 @@ class LarapieManager
         $modules = [];
 
         foreach (self::getModuleNames() as $moduleName) {
-            $modules[] = $this->getModule($moduleName);
+            $modules[] = $this->createModule($moduleName);
         }
 
         return $modules;
@@ -28,7 +28,7 @@ class LarapieManager
         $packages = [];
 
         foreach (self::getPackageNames() as $package) {
-            $packages[] = $this->getPackage($package);
+            $packages[] = $this->createPackage($package);
         }
 
         return $packages;
@@ -48,6 +48,18 @@ class LarapieManager
             return $modules[$name];
 
         return null;
+    }
+
+    protected function createModule($name)
+    {
+        $name = Str::studly($name);
+        return new Module($name, $this->getModulePath($name));
+    }
+
+    protected function createPackage($name)
+    {
+        $name = Str::studly($name);
+        return new Package($name, $this->getPackagePath($name));
     }
 
     /**
