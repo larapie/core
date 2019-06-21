@@ -33,7 +33,6 @@ class BootstrapServiceProvider extends ServiceProvider
         $this->registerPolicies($service->getModels());
         $this->registerObservers($service->getModels());
 
-
         /*
          * Override the seed command with the larapi custom one.
          * This ensures that the seeders from all modules are triggered.
@@ -41,14 +40,12 @@ class BootstrapServiceProvider extends ServiceProvider
          */
         $this->overrideSeedCommand($this->app, $service);
 
-
         /*
          * Override the package manifest with the larapi custom one.
          * This ensures that the laravel extras in the composer json's are read for all modules
          *
          */
         $this->overridePackageManifest($this->app);
-
 
         /*
          * Register all Module Service providers.
@@ -113,7 +110,7 @@ class BootstrapServiceProvider extends ServiceProvider
         foreach ($routes as $route) {
             if (class_exists($providerClass = config('larapie.providers.routing')) && ($middleware = $route['middleware_group']) !== null) {
                 $provider = new $providerClass($this->app);
-                $method = 'map' . ucfirst(strtolower($route['middleware_group']) . 'Routes');
+                $method = 'map'.ucfirst(strtolower($route['middleware_group']).'Routes');
 
                 if (method_exists($provider, $method)) {
                     $provider->$method($route['route_prefix'], $route['path'], $route['controller_namespace']);
@@ -123,11 +120,13 @@ class BootstrapServiceProvider extends ServiceProvider
 
             $routes = Route::prefix($route['route_prefix']);
 
-            if ($middleware !== null)
+            if ($middleware !== null) {
                 $routes->middleware($route['middleware_group']);
+            }
 
-            if (($controller = $route['controller_namespace']) !== null)
+            if (($controller = $route['controller_namespace']) !== null) {
                 $routes->namespace($controller);
+            }
 
             $routes->group($route['path']);
         }

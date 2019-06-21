@@ -41,7 +41,6 @@ class ModelResource extends ClassResource
         return $this->policy;
     }
 
-
     public function extractObservers()
     {
         $observers = [];
@@ -71,8 +70,8 @@ class ModelResource extends ClassResource
     public function toArray()
     {
         return array_merge(parent::toArray(), [
-            'policy' => $this->getPolicy(),
-            'observers' => $this->getObservers()
+            'policy'    => $this->getPolicy(),
+            'observers' => $this->getObservers(),
         ]);
     }
 }
