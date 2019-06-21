@@ -13,8 +13,8 @@ class LarapieManager
     {
         $modules = [];
 
-        foreach (self::getModuleNames() as $moduleName) {
-            $modules[] = $this->createModule($moduleName);
+        foreach (self::getModuleNames() as $module) {
+            $modules[$module] = $this->createModule($module);
         }
 
         return $modules;
@@ -28,7 +28,7 @@ class LarapieManager
         $packages = [];
 
         foreach (self::getPackageNames() as $package) {
-            $packages[] = $this->createPackage($package);
+            $packages[$package] = $this->createPackage($package);
         }
 
         return $packages;
