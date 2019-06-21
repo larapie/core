@@ -4,7 +4,7 @@
 namespace Larapie\Core\Contracts;
 
 
-interface Schedule
+interface Scheduling
 {
     public function schedule(\Illuminate\Console\Scheduling\Schedule $schedule): void;
 }
