@@ -19,7 +19,7 @@ class LarapieServiceProvider extends ServiceProvider
         InstallLarapieCommand::class,
         UpdateLarapieCommand::class,
         CacheBootstrapCommand::class,
-        ResetDatabaseCommand::class
+        ResetDatabaseCommand::class,
     ];
 
     /**
