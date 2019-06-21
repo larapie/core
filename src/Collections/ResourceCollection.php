@@ -89,7 +89,7 @@ class ResourceCollection extends Collection
             $files = [];
         }
         foreach ($files as $file) {
-            $resource = new $resourceType($path . '/' . $file, $module);
+            $resource = new $resourceType($path.'/'.$file, $module);
             if ($resource->isValid()) {
                 $collection->add($resource);
             }
