@@ -58,13 +58,13 @@ class LarapieServiceProvider extends ServiceProvider
 
     public function registerConfig()
     {
-        $this->mergeConfigFrom(__DIR__.'/Config/larapie.php', 'larapie');
+        $this->mergeConfigFrom(__DIR__ . '/Config/larapie.php', 'larapie');
     }
 
     public function publishConfig()
     {
         $this->publishes([
-            __DIR__.'/Config/larapie.php' => config_path('larapie.php'),
+            __DIR__ . '/Config/larapie.php' => config_path('larapie.php'),
         ]);
     }
 

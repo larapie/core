@@ -22,7 +22,7 @@
             "Larapie\\Core\\": "src/"
         },
         "files": [
-            "src/Larapie/Core/Support/Helpers/helpers.php"
+            "src/Support/Helpers/helpers.php"
         ]
     },
     "autoload-dev": {

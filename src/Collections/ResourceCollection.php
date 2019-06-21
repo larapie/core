@@ -89,7 +89,7 @@ class ResourceCollection extends Collection
             $files = [];
         }
         foreach ($files as $file) {
-            $resource = new $resourceType($path.'/'.$file, $module);
+            $resource = new $resourceType($path . '/' . $file, $module);
             if ($resource->isValid()) {
                 $collection->add($resource);
             }
@@ -108,6 +108,18 @@ class ResourceCollection extends Collection
         }
 
         return $classes;
+    }
+
+    public function getFQNClasses()
+    {
+        $fqns = [];
+        foreach ($this as $resource) {
+            if ($resource instanceof ClassResource) {
+                $fqns[] = $resource->getFQN();
+            }
+        }
+
+        return $fqns;
     }
 
     public function getFileNames()
