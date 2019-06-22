@@ -82,9 +82,11 @@ class LarapieManager
         return null;
     }
 
-    protected function getFilesFromDirectory($path)
+    protected function scanDirectoryForFolders($path)
     {
-        return array_diff(scandir($path), ['..', '.']);
+        if (file_exists($path) && is_dir($path))
+            return array_diff(scandir($path), ['..', '.']);
+        return [];
     }
 
     /**
@@ -92,7 +94,7 @@ class LarapieManager
      */
     public function getModuleNames(): array
     {
-        return $this->getFilesFromDirectory($this->getModulesBasePath());
+        return $this->scanDirectoryForFolders($this->getModulesBasePath());
     }
 
     /**
@@ -100,7 +102,7 @@ class LarapieManager
      */
     public function getPackageNames(): array
     {
-        return $this->getFilesFromDirectory($this->getPackagesBasePath());
+        return $this->scanDirectoryForFolders($this->getPackagesBasePath());
     }
 
     /**
@@ -110,7 +112,7 @@ class LarapieManager
      */
     public function getModulePath(string $module): string
     {
-        return self::getModulesBasePath().'/'.$module;
+        return self::getModulesBasePath() . '/' . $module;
     }
 
     /**
@@ -120,7 +122,7 @@ class LarapieManager
      */
     public function getPackagePath(string $package): string
     {
-        return self::getPackagesBasePath().'/'.$package;
+        return self::getPackagesBasePath() . '/' . $package;
     }
 
     /**
