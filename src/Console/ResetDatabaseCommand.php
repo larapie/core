@@ -14,14 +14,14 @@ class ResetDatabaseCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'db:reset';
+    protected $signature = 'db:reset {--seed}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Clear cache, drop all tables/collections and reseed.';
+    protected $description = 'Clear cache, drop all tables/collections and optionally reseed.';
 
     /**
      * Execute the console command.
@@ -44,8 +44,10 @@ class ResetDatabaseCommand extends Command
             $this->line($this->call('migrate:fresh'));
             $this->info('database reset');
 
-            $this->line($this->call('db:seed'));
-            $this->info('database seeded');
+            if ($this->option('seed')) {
+                $this->line($this->call('db:seed'));
+                $this->info('database seeded');
+            }
         }
 
         $this->info('Application successfully reset!');
