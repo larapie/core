@@ -4,7 +4,7 @@ namespace Larapie\Core\Console;
 
 use Illuminate\Database\ConnectionResolverInterface as Resolver;
 use Illuminate\Database\Eloquent\Model;
-use Larapie\Core\Larapie\Core\Contracts\Bootstrapping;
+use Larapie\Core\Contracts\Bootstrapping;
 
 class SeedCommand extends \Illuminate\Database\Console\Seeds\SeedCommand
 {

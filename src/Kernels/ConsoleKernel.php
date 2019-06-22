@@ -4,7 +4,7 @@ namespace Larapie\Core\Kernels;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel;
-use Larapie\Core\Larapie\Core\Contracts\Bootstrapping;
+use Larapie\Core\Contracts\Bootstrapping;
 
 class ConsoleKernel extends Kernel
 {

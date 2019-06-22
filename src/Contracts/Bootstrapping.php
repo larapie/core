@@ -1,6 +1,6 @@
 <?php
 
-namespace Larapie\Core\Larapie\Core\Contracts;
+namespace Larapie\Core\Contracts;
 
 interface Bootstrapping
 {

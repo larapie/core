@@ -10,7 +10,7 @@ namespace Larapie\Core\Services;
 
 use Larapie\Core\Cache\BootstrapCache;
 use Larapie\Core\Collections\ResourceCollection;
-use Larapie\Core\Larapie\Core\Contracts\Bootstrapping;
+use Larapie\Core\Contracts\Bootstrapping;
 use Larapie\Core\Support\Facades\Larapie;
 
 class BootstrapService implements Bootstrapping

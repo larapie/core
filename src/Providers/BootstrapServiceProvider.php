@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Larapie\Core\Console\SeedCommand;
-use Larapie\Core\Larapie\Core\Contracts\Bootstrapping;
+use Larapie\Core\Contracts\Bootstrapping;
 
 /**
  * Class BootstrapServiceProvider.
