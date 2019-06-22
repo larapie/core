@@ -88,8 +88,9 @@ class ResourceCollection extends Collection
         } catch (\ErrorException $e) {
             $files = [];
         }
+
         foreach ($files as $file) {
-            $resource = new $resourceType($path.'/'.$file, $module);
+            $resource = new $resourceType($path . '/' . $file, $module);
             if ($resource->isValid()) {
                 $collection->add($resource);
             }
@@ -130,5 +131,10 @@ class ResourceCollection extends Collection
         }
 
         return $files;
+    }
+
+    public function getNamespace()
+    {
+        return $this->getModule()->getNamespace() . '\\' . str_replace('/', '\\', $this->path);
     }
 }

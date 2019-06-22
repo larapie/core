@@ -74,6 +74,8 @@ return [
         'contracts'     => '/Contracts',
         'events'        => '/Events',
         'factories'     => '/Database/Factories',
+        'guards' => '/Guards',
+        'jobs' => '/Jobs',
         'listeners'     => '/Listeners',
         'middleware'    => '/Http/Middleware',
         'migrations'    => '/Database/Migrations',
