@@ -6,15 +6,17 @@ class BootstrapCache
 {
     public static function get(): ?array
     {
-        if (!file_exists(self::getCachePath()))
+        if (!file_exists(self::getCachePath())) {
             return null;
+        }
+
         return include self::getCachePath();
     }
 
     public static function put($data): void
     {
         if (self::cacheIsWriteable()) {
-            file_put_contents(self::getCachePath(), '<?php return ' . var_export($data, true) . ';');
+            file_put_contents(self::getCachePath(), '<?php return '.var_export($data, true).';');
         }
     }
 
@@ -35,6 +37,6 @@ class BootstrapCache
 
     protected static function getCachePath()
     {
-        return app()->bootstrapPath() . config('larapie.bootstrap_path');
+        return app()->bootstrapPath().config('larapie.bootstrap_path');
     }
 }
