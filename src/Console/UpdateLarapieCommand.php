@@ -36,7 +36,7 @@ class UpdateLarapieCommand extends Command
                 $this->info($this->gitPull());
             }
             $this->info($this->composerInstall());
-            $this->info($this->reloadBootstrap());
+            $this->info($this->bootstrap());
             $this->info($this->disableMaintenanceMode());
         }
     }
@@ -61,7 +61,7 @@ class UpdateLarapieCommand extends Command
         return exec('git pull');
     }
 
-    public function reloadBootstrap()
+    public function bootstrap()
     {
         return $this->call('larapie:bootstrap');
     }

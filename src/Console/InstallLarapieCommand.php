@@ -39,6 +39,7 @@ class InstallLarapieCommand extends Command
             $this->info($this->generateAppKey());
             $this->info($this->publishAssets());
             $this->info($this->seedDatabase());
+            $this->info($this->bootstrap());
         }
     }
 
@@ -72,5 +73,10 @@ class InstallLarapieCommand extends Command
     public function seedDatabase()
     {
         return $this->call('db:seed');
+    }
+
+    public function bootstrap()
+    {
+        return $this->call('larapie:bootstrap');
     }
 }

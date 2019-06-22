@@ -3,6 +3,7 @@
 namespace Larapie\Core\Console;
 
 use Illuminate\Console\Command;
+use Larapie\Core\Cache\BootstrapCache;
 use Larapie\Core\Services\BootstrapService;
 
 class CacheBootstrapCommand extends Command
@@ -31,6 +32,9 @@ class CacheBootstrapCommand extends Command
         $service = new BootstrapService();
         $service->cache();
 
-        $this->info('Bootstrap reloaded.');
+        if (BootstrapCache::cacheIsWriteable())
+            $this->info('Bootstrap reloaded.');
+        else
+            $this->error('Bootstrap cache folder is not writeable. Make sure /bootstrap/cache is writeable. You can continue but performance will be degraded in production environments');
     }
 }
