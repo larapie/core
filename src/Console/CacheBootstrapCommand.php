@@ -32,9 +32,10 @@ class CacheBootstrapCommand extends Command
         $service = new BootstrapService();
         $service->cache();
 
-        if (BootstrapCache::cacheIsWriteable())
+        if (BootstrapCache::cacheIsWriteable()) {
             $this->info('Bootstrap reloaded.');
-        else
+        } else {
             $this->error('Bootstrap cache folder is not writeable. Make sure /bootstrap/cache is writeable. You can continue but performance will be degraded in production environments');
+        }
     }
 }

@@ -66,8 +66,8 @@ return [
     */
 
     'resources' => [
-        'actions' => '/Actions',
-        'attributes' => '/Attributes',
+        'actions'       => '/Actions',
+        'attributes'    => '/Attributes',
         'commands'      => '/Console',
         'configs'       => '/Config',
         'controllers'   => '/Http/Controllers',
