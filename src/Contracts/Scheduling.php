@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Larapie\Core\Contracts;
-
 
 interface Scheduling
 {
