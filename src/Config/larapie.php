@@ -85,7 +85,7 @@ return [
         'policies'      => '/Policies',
         'permissions'   => '/Permissions',
         'providers'     => '/Providers',
-        'requests'      => '/Requests',
+        'requests' => '/Http/Requests',
         'rules'         => '/Rules',
         'repositories'  => '/Repositories',
         'routes'        => '/Routes',
