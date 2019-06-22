@@ -7,7 +7,6 @@ use Larapie\Core\Contracts\Scheduling;
 
 class ProviderResource extends ClassResource
 {
-
     public function hasSchedule()
     {
         return class_implements_interface($this->getFQN(), Scheduling::class);
