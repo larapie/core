@@ -17,8 +17,10 @@ trait DispatchedEvents
         $events = new Collection([]);
         Event::assertDispatched($class, function ($event) use (&$events) {
             $events->put(get_class($event), $event);
+
             return true;
         });
+
         return $events;
     }
 }
