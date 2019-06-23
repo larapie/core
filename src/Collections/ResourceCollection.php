@@ -85,7 +85,7 @@ class ResourceCollection extends Collection
     {
         $collection = new static();
         $collection->setPath($path);
-        $collection->setNamespace(str_replace($module->getPath(), '', $path));
+        $collection->setNamespace(str_replace('/','\\',$module->getNamespace() . str_replace($module->getPath(), '', $path)));
         $collection->setType($resourceType);
         $collection->setModule($module);
 
