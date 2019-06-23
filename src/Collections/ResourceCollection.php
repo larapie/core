@@ -19,6 +19,11 @@ class ResourceCollection extends Collection
     protected $path;
 
     /**
+     * @var string
+     */
+    protected $namespace;
+
+    /**
      * @var Module
      */
     protected $module;
@@ -80,6 +85,7 @@ class ResourceCollection extends Collection
     {
         $collection = new static();
         $collection->setPath($path);
+        $collection->setNamespace(str_replace($module->getPath(), '', $path));
         $collection->setType($resourceType);
         $collection->setModule($module);
 
@@ -135,6 +141,11 @@ class ResourceCollection extends Collection
 
     public function getNamespace()
     {
-        return $this->getModule()->getNamespace() . '\\' . str_replace('/', '\\', $this->path);
+        return $this->namespace;
+    }
+
+    protected function setNamespace(string $namespace)
+    {
+        $this->namespace = $namespace;
     }
 }
