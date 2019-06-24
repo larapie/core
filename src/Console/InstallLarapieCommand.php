@@ -36,7 +36,6 @@ class InstallLarapieCommand extends Command
             $this->info($this->copyEnvFile());
             $this->info($this->generateAppKey());
             $this->info($this->publishAssets());
-            $this->info($this->seedDatabase());
             $this->info($this->bootstrap());
         }
     }
@@ -61,11 +60,6 @@ class InstallLarapieCommand extends Command
         $this->call('vendor:publish', [
             '--provider' => LarapieServiceProvider::class,
         ]);
-    }
-
-    public function seedDatabase()
-    {
-        return $this->call('db:seed', ['--seed' => true]);
     }
 
     public function bootstrap()
