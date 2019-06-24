@@ -31,4 +31,8 @@ class CoreTests extends TestCase
             $path
         );
     }
+
+    public function testBootstrap(){
+        $this->artisan('larapie:bootstrap');
+    }
 }
