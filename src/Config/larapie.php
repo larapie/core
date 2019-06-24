@@ -4,10 +4,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Api Domain
+    |--------------------------------------------------------------------------
+    |
+    | This value is the domain that will be used to register the routes in the api group.
+    | Setting this value to something other than null will also remove the 'api' prefix.
+    |
+    */
+
+    'api_url' => env('API_URL', null),
+
+    /*
+    |--------------------------------------------------------------------------
     | Bootstrap Path
     |--------------------------------------------------------------------------
     |
-    | This value is the name of the file that will be used to save the boostrap
+    | This value is the name of the file that will be used to save the bootstrap
     | cache to.
     |
     */
