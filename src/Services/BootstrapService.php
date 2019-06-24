@@ -10,6 +10,7 @@ namespace Larapie\Core\Services;
 
 use Illuminate\Support\Collection;
 use Larapie\Core\Cache\BootstrapCache;
+use Larapie\Core\Collections\ResourceCollection;
 use Larapie\Core\Contracts\Bootstrapping;
 use Larapie\Core\Support\Facades\Larapie;
 
@@ -51,24 +52,30 @@ class BootstrapService implements Bootstrapping
         $bootstrap = new Collection();
 
         foreach (Larapie::getModules() as $module) {
-            $bootstrap->put('commands', $module->getCommands()->toArray());
-            $bootstrap->put('events', $module->getEvents()->toArray());
-            $bootstrap->put('routes', $module->getRoutes()->toArray());
-            $bootstrap->put('configs', $module->getConfigs()->toArray());
-            $bootstrap->put('factories', $module->getFactories()->toArray());
-            $bootstrap->put('migrations', $module->getMigrations()->toArray());
-            $bootstrap->put('models', $module->getModels()->toArray());
-            $bootstrap->put('seeders', $module->getSeeders()->toArray());
-            $bootstrap->put('providers', $module->getServiceProviders()->toArray());
+            $this->mergeResourceWithBootstrap($bootstrap, 'commands', $module->getCommands());
+            $this->mergeResourceWithBootstrap($bootstrap, 'events', $module->getEvents());
+            $this->mergeResourceWithBootstrap($bootstrap, 'routes', $module->getRoutes());
+            $this->mergeResourceWithBootstrap($bootstrap, 'configs', $module->getConfigs());
+            $this->mergeResourceWithBootstrap($bootstrap, 'factories', $module->getFactories());
+            $this->mergeResourceWithBootstrap($bootstrap, 'migrations', $module->getMigrations());
+            $this->mergeResourceWithBootstrap($bootstrap, 'models', $module->getModels());
+            $this->mergeResourceWithBootstrap($bootstrap, 'seeders', $module->getSeeders());
+            $this->mergeResourceWithBootstrap($bootstrap, 'providers', $module->getServiceProviders());
         }
 
         foreach (Larapie::getPackages() as $package) {
-            $bootstrap->put('commands', array_merge($bootstrap->get('commands'), $package->getCommands()->toArray()));
-            $bootstrap->put('configs', array_merge($bootstrap->get('configs'), $package->getConfigs()->toArray()));
-            $bootstrap->put('providers', array_merge($bootstrap->get('providers'), $package->getServiceProviders()->toArray()));
+            $this->mergeResourceWithBootstrap($bootstrap, 'commands', $package->getCommands());
+            $this->mergeResourceWithBootstrap($bootstrap, 'configs', $package->getConfigs());
+            $this->mergeResourceWithBootstrap($bootstrap, 'providers', $package->getServiceProviders());
+            $this->mergeResourceWithBootstrap($bootstrap, 'migrations', $package->getMigrations());
         }
 
         return $bootstrap->toArray();
+    }
+
+    protected function mergeResourceWithBootstrap(&$bootstrap, string $resourceType, ResourceCollection $resourceCollection)
+    {
+        $bootstrap->put($resourceType, array_merge($bootstrap->get($resourceType) ?? [], $resourceCollection->toArray()));
     }
 
     public function load(string $resourceType)
