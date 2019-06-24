@@ -3,6 +3,7 @@
 namespace Larapie\Core\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
+use Larapie\Core\Internals\Foundation;
 
 /**
  * @method static \Larapie\Core\Internals\Module[] getModules()
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static string[] getModuleNames()
  * @method static string[] getPackageNames()
  * @method static string getModulePath()
+ * @method static Foundation getFoundation()
  * @method static string getPackagePath()
  * @method static string getModuleBasePath()
  * @method static string getPackageBasePath()

@@ -19,6 +19,8 @@ class PackageManifest extends \Illuminate\Foundation\PackageManifest
             $ignore[] = $this->extractToIgnorePackagesFromComposerFile($package->getComposerFilePath());
         }
 
+        $ignore[] = $this->extractToIgnorePackagesFromComposerFile(Larapie::getFoundation()->getComposerFilePath());
+
         return array_unique(array_merge(parent::packagesToIgnore(), Arr::flatten($ignore)));
     }
 
