@@ -34,8 +34,6 @@ class InstallLarapieCommand extends Command
 
         if ($proceed) {
             $this->info($this->copyEnvFile());
-            $this->info($this->installMergePlugin());
-            $this->info($this->composerInstall());
             $this->info($this->generateAppKey());
             $this->info($this->publishAssets());
             $this->info($this->seedDatabase());
@@ -65,14 +63,9 @@ class InstallLarapieCommand extends Command
         ]);
     }
 
-    public function composerInstall()
-    {
-        return exec('composer install');
-    }
-
     public function seedDatabase()
     {
-        return $this->call('db:seed');
+        return $this->call('db:seed', ['--seed' => true]);
     }
 
     public function bootstrap()
