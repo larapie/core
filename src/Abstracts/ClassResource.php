@@ -2,6 +2,7 @@
 
 namespace Larapie\Core\Abstracts;
 
+use Illuminate\Support\Str;
 use Larapie\Core\Resolvers\ClassDataResolver;
 
 abstract class ClassResource extends Resource
@@ -48,7 +49,7 @@ abstract class ClassResource extends Resource
 
     public function getFQN()
     {
-        return $this->getNamespace().'\\'.$this->getClassName();
+        return Str::replaceFirst('\\', '', $this->getNamespace() . '\\' . $this->getClassName());
     }
 
     public function toArray()
