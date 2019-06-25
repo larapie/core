@@ -3,13 +3,11 @@
 namespace Larapie\Core\Abstracts;
 
 use Illuminate\Support\Str;
-use Larapie\Core\Resolvers\ClassDataResolver;
+use Larapie\Core\Resolvers\FQNResolver;
 
 abstract class ClassResource extends Resource
 {
-    protected $class;
-
-    protected $namespace;
+    protected $fqn;
 
     protected function boot()
     {
@@ -18,12 +16,7 @@ abstract class ClassResource extends Resource
 
     protected function resolveClassAndNamespace()
     {
-        try {
-            $resolver = new ClassDataResolver($this->path);
-            $this->class = $resolver->getClass();
-            $this->namespace = $resolver->getNamespace();
-        } catch (\Throwable $e) {
-        }
+        $this->fqn = FQNResolver::resolve($this->path);
     }
 
     /**
@@ -31,7 +24,7 @@ abstract class ClassResource extends Resource
      */
     public function getClassName()
     {
-        return $this->class;
+        return get_short_class_name($this->fqn);
     }
 
     /**
@@ -39,7 +32,7 @@ abstract class ClassResource extends Resource
      */
     public function getNamespace()
     {
-        return $this->namespace;
+        return Str::replaceLast('\\','',str_replace($this->getClassName(),'',$this->fqn));
     }
 
     public function isValid()
@@ -49,7 +42,7 @@ abstract class ClassResource extends Resource
 
     public function getFQN()
     {
-        return Str::replaceFirst('\\', '', $this->getNamespace() . '\\' . $this->getClassName());
+        return $this->fqn;
     }
 
     public function toArray()
