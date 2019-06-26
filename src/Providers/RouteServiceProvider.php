@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Larapie\Core\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -22,7 +21,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::prefix($prefix)
             ->domain(config('app.url'))
             ->middleware('web')
-            ->namespace($namespace . '\\' . 'Web')
+            ->namespace($namespace.'\\'.'Web')
             ->group($path);
     }
 
@@ -39,9 +38,8 @@ class RouteServiceProvider extends ServiceProvider
     {
         $route = Route::middleware('api');
         $route->domain(config('larapie.api_url') ?? config('app.url'));
-        $route->prefix($prefix = config('larapie.api_url') === null ? 'api/' . $prefix : $prefix);
-        $route->namespace($namespace . '\\' . 'Api');
+        $route->prefix($prefix = config('larapie.api_url') === null ? 'api/'.$prefix : $prefix);
+        $route->namespace($namespace.'\\'.'Api');
         $route->group($path);
     }
 }
-

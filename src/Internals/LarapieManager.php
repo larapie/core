@@ -119,7 +119,7 @@ class LarapieManager
      */
     public function getModulePath(string $module): string
     {
-        return self::getModulesBasePath() . '/' . $module;
+        return self::getModulesBasePath().'/'.$module;
     }
 
     /**
@@ -129,7 +129,7 @@ class LarapieManager
      */
     public function getPackagePath(string $package): string
     {
-        return self::getPackagesBasePath() . '/' . $package;
+        return self::getPackagesBasePath().'/'.$package;
     }
 
     /**
