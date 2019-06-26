@@ -12,6 +12,6 @@ trait MakesApiRequests
             throw new \Exception('Invalid Http Method');
         }
 
-        return new TestResponse($this->json($method, env('API_URL') . $route, $payload, $headers)->baseResponse);
+        return new TestResponse($this->json($method, env('API_URL').$route, $payload, $headers)->baseResponse);
     }
 }

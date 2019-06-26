@@ -6,9 +6,10 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Str;
 
 /**
- * Class FQNResolver
+ * Class FQNResolver.
  *
  * Resolve the fully qualified namespace from a filepath.
+ *
  * @todo add a 3th failswitch to get the namespace by parsing the file itself.
  */
 class FQNResolver
@@ -17,8 +18,9 @@ class FQNResolver
 
     public static function resolve(string $path)
     {
-        if (array_key_exists($path, self::$resolved))
+        if (array_key_exists($path, self::$resolved)) {
             return self::$resolved[$path];
+        }
 
         if (!file_exists($path)) {
             throw new FileNotFoundException();
@@ -43,7 +45,7 @@ class FQNResolver
 
         if ($class === null) {
             //TODO parse class with tokenizer and extract namespace
-            throw new \RuntimeException("Could not extract fully qualified namespace from filepath. Please make an issue if you encounter this issue at https://github.com/larapie/core");
+            throw new \RuntimeException('Could not extract fully qualified namespace from filepath. Please make an issue if you encounter this issue at https://github.com/larapie/core');
         }
 
         return tap($class, function ($class) use ($path) {

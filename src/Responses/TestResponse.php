@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Larapie\Core\Responses;
 
 use Illuminate\Foundation\Testing\Assert as PHPUnit;
