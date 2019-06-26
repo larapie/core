@@ -12,10 +12,10 @@
     "require": {
         "php": "^7.2",
         "ext-json": "*",
-        "laravel/framework": "~5.8.0|~5.9.0"
+        "laravel/framework": "~5.8.0|~5.9.0",
+        "dms/phpunit-arraysubset-asserts": "^0.1.0"
     },
     "require-dev": {
-        "dms/phpunit-arraysubset-asserts": "^0.1.0",
         "orchestra/testbench": "~3.8"
     },
     "autoload": {
