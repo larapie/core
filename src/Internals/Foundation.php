@@ -42,5 +42,4 @@ class Foundation
     {
         return config('larapie.foundation.namespace');
     }
-
 }

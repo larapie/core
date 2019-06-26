@@ -24,7 +24,8 @@ class CoreTests extends TestCase
         $this->assertTrue(true);
     }
 
-    public function testFoundationComposerPath(){
+    public function testFoundationComposerPath()
+    {
         $path = Larapie::getFoundation()->getComposerFilePath();
         $this->assertEquals(
             base_path(config('larapie.foundation.path')).'/composer.json',
@@ -32,7 +33,8 @@ class CoreTests extends TestCase
         );
     }
 
-    public function testBootstrap(){
+    public function testBootstrap()
+    {
         $this->artisan('larapie:bootstrap');
     }
 }

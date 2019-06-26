@@ -32,7 +32,7 @@ abstract class ClassResource extends Resource
      */
     public function getNamespace()
     {
-        return Str::replaceLast('\\','',str_replace($this->getClassName(),'',$this->fqn));
+        return Str::replaceLast('\\', '', str_replace($this->getClassName(), '', $this->fqn));
     }
 
     public function isValid()
