@@ -119,7 +119,7 @@ class LarapieManager
      */
     public function getModulePath(string $module): string
     {
-        return self::getModulesBasePath().'/'.$module;
+        return self::getModulesBasePath() . '/' . $module;
     }
 
     /**
@@ -129,7 +129,7 @@ class LarapieManager
      */
     public function getPackagePath(string $package): string
     {
-        return self::getPackagesBasePath().'/'.$package;
+        return self::getPackagesBasePath() . '/' . $package;
     }
 
     /**
@@ -146,5 +146,15 @@ class LarapieManager
     public function getPackagesBasePath(): string
     {
         return base_path(config('larapie.packages.path'));
+    }
+
+    public function getAppUrl(): string
+    {
+        return config('app.url');
+    }
+
+    public function getApiUrl(): string
+    {
+        return config('larapie.api_url') === null ? config('app.url') . '/api' : config('larapie.api_url');
     }
 }

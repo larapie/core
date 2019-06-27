@@ -17,6 +17,8 @@ use Larapie\Core\Internals\Foundation;
  * @method static string getPackagePath()
  * @method static string getModuleBasePath()
  * @method static string getPackageBasePath()
+ * @method static string getAppUrl()
+ * @method static string getApiUrl()
  *
  * @see \Larapie\Core\Internals\LarapieManager
  */
