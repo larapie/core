@@ -38,7 +38,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::middleware('api')
             ->domain((new LarapieManager())->getApiUrl())
-            ->prefix(config('larapie.api_url') === null ? 'api/' . $prefix : $prefix)
+            ->prefix(config('larapie.api_url') === null ? 'api/'.$prefix : $prefix)
             ->group($path);
     }
 }
