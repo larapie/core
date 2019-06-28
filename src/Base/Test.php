@@ -16,8 +16,8 @@ abstract class Test extends TestCase
     {
         parent::setUp();
 
-        if (($user = $this->user()) !== null)
+        if (($user = $this->user()) !== null) {
             $this->actAs($user);
+        }
     }
-
 }

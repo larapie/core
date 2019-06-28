@@ -22,7 +22,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::prefix($prefix)
             ->domain((new LarapieManager())->getAppUrl())
             ->middleware('web')
-            ->namespace($namespace . '\\' . 'Web')
+            ->namespace($namespace.'\\'.'Web')
             ->group($path);
     }
 
@@ -39,8 +39,8 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::middleware('api')
             ->domain((new LarapieManager())->getApiUrl())
-            ->prefix(config('larapie.api_url') === null ? 'api/' . $prefix : $prefix)
-            ->namespace($namespace . '\\' . 'Api')
+            ->prefix(config('larapie.api_url') === null ? 'api/'.$prefix : $prefix)
+            ->namespace($namespace.'\\'.'Api')
             ->group($path);
     }
 }
