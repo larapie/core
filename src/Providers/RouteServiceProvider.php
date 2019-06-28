@@ -17,12 +17,11 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function mapWebRoutes(string $prefix, string $path, string $namespace)
+    public function mapWebRoutes(string $prefix, string $path)
     {
         Route::prefix($prefix)
             ->domain((new LarapieManager())->getAppUrl())
             ->middleware('web')
-            ->namespace($namespace . '\\' . 'Web')
             ->group($path);
     }
 
@@ -35,12 +34,11 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function mapApiRoutes(string $prefix, string $path, string $namespace)
+    public function mapApiRoutes(string $prefix, string $path)
     {
         Route::middleware('api')
             ->domain((new LarapieManager())->getApiUrl())
             ->prefix(config('larapie.api_url') === null ? 'api/' . $prefix : $prefix)
-            ->namespace($namespace . '\\' . 'Api')
             ->group($path);
     }
 }

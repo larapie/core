@@ -123,7 +123,7 @@ class BootstrapServiceProvider extends ServiceProvider
                 $method = 'map'.ucfirst(strtolower($route['middleware_group']).'Routes');
 
                 if (method_exists($provider, $method)) {
-                    $provider->$method($route['route_prefix'], $route['path'], $route['controller_namespace']);
+                    $provider->$method($route['route_prefix'], $route['path']);
                     continue;
                 }
             }
@@ -132,10 +132,6 @@ class BootstrapServiceProvider extends ServiceProvider
 
             if ($middleware !== null) {
                 $routes->middleware($route['middleware_group']);
-            }
-
-            if (($controller = $route['controller_namespace']) !== null) {
-                $routes->namespace($controller);
             }
 
             $routes->group($route['path']);
