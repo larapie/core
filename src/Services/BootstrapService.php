@@ -52,15 +52,15 @@ class BootstrapService implements Bootstrapping
         $bootstrap = new Collection();
 
         foreach (Larapie::getModules() as $module) {
+            $this->mergeResourceWithBootstrap($bootstrap, 'configs', $module->getConfigs());
             $this->mergeResourceWithBootstrap($bootstrap, 'commands', $module->getCommands());
             $this->mergeResourceWithBootstrap($bootstrap, 'events', $module->getEvents());
-            $this->mergeResourceWithBootstrap($bootstrap, 'routes', $module->getRoutes());
-            $this->mergeResourceWithBootstrap($bootstrap, 'configs', $module->getConfigs());
             $this->mergeResourceWithBootstrap($bootstrap, 'factories', $module->getFactories());
             $this->mergeResourceWithBootstrap($bootstrap, 'migrations', $module->getMigrations());
             $this->mergeResourceWithBootstrap($bootstrap, 'models', $module->getModels());
             $this->mergeResourceWithBootstrap($bootstrap, 'seeders', $module->getSeeders());
             $this->mergeResourceWithBootstrap($bootstrap, 'providers', $module->getServiceProviders());
+            $this->mergeResourceWithBootstrap($bootstrap, 'routes', $module->getRoutes());
         }
 
         foreach (Larapie::getPackages() as $package) {
