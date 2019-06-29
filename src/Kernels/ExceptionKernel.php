@@ -12,32 +12,22 @@ class ExceptionKernel extends ExceptionHandler
      * Render an exception into an HTTP response.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Exception               $exception
+     * @param \Exception $exception
      *
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $exception)
     {
-        return $request->wantsJson() ? $this->jsonErrorResponse($exception) : parent::render($request, $exception);
-    }
-
-    protected function jsonErrorResponse(Exception $exception)
-    {
-        return response()->json([
-            'error' => [
-                'message'     => $exception->getMessage(),
-                'status_code' => $exception->getStatusCode(),
-            ],
-        ])->setStatusCode($exception->getStatusCode());
+        return parent::render($request, $exception);
     }
 
     protected function convertValidationExceptionToResponse(ValidationException $exception, $request)
     {
+        if (!$request->wantsJson())
+            parent::convertValidationExceptionToResponse($exception, $request);
+
         return response()->json([
-            'error' => [
-                'message'     => $exception->validator->errors()->getMessages(),
-                'status_code' => 422,
-            ],
+            'message' => $exception->validator->errors()->getMessages(),
         ])->setStatusCode(422);
     }
 }
