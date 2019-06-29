@@ -33,6 +33,7 @@ class FQNResolver
 
             //loop in reverse because it's more likely to find the correct class at the end of the stack.
             for ($i = count($classes) - 1; $i >= 0; $i--) {
+                //TODO find the most similar namespace and not just the same file/class name
                 if (Str::endsWith($classes[$i], $pathinfo['filename'])) {
                     $class = $classes[$i];
                     break;
