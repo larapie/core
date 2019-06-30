@@ -4,12 +4,14 @@ namespace Larapie\Core\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
 use Larapie\Core\Internals\Foundation;
+use Larapie\Core\Internals\Modules;
+use Larapie\Core\Internals\Packages;
 
 /**
- * @method static \Larapie\Core\Internals\Module[] getModules()
+ * @method static \Larapie\Core\Internals\Module[] | Modules getModules()
  * @method static \Larapie\Core\Internals\Module getModule(string $module)
  * @method static \Larapie\Core\Internals\Module getPackage(string $module)
- * @method static \Larapie\Core\Internals\Package[] getPackages()
+ * @method static \Larapie\Core\Internals\Package[] | Packages getPackages()
  * @method static string[] getModuleNames()
  * @method static string[] getPackageNames()
  * @method static string getModulePath()

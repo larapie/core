@@ -4,53 +4,142 @@ namespace Larapie\Core\Resolvers;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Str;
+use Larapie\Core\Support\Facades\Larapie;
 
 /**
  * Class FQNResolver.
  *
  * Resolve the fully qualified namespace from a filepath.
+ * Resolving is cached to speed up performance.
  *
- * @todo add a 3th failswitch to get the namespace by parsing the file itself.
  */
 class FQNResolver
 {
     protected static $resolved = [];
+    protected static $classes;
 
-    public static function resolve(string $path)
+    public static function resolve(string $filePath)
     {
-        if (array_key_exists($path, self::$resolved)) {
-            return self::$resolved[$path];
+        if (array_key_exists($filePath, self::$resolved)) {
+            return self::$resolved[$filePath];
         }
 
-        if (!file_exists($path)) {
+        if (!file_exists($filePath)) {
             throw new FileNotFoundException();
         }
         $class = null;
-        $classes = get_declared_classes();
-        $alreadyLoaded = include_once $path;
-        if (is_bool($alreadyLoaded) && $alreadyLoaded) {
-            $pathinfo = pathinfo($path);
+        $classes = collect(get_declared_classes());
+        $path = $filePath;
+        $alreadyLoaded = include_once $filePath;
 
-            //loop in reverse because it's more likely to find the correct class at the end of the stack.
-            for ($i = count($classes) - 1; $i >= 0; $i--) {
-                //TODO find the most similar namespace and not just the same file/class name
-                if (Str::endsWith($classes[$i], $pathinfo['filename'])) {
-                    $class = $classes[$i];
-                    break;
-                }
-            }
-        } else {
-            $diff = array_diff(get_declared_classes(), $classes);
-            $class = end($diff);
+        //SECOND DETECTION METHOD. HAPPENS WHEN CLASS IS ALREADY INCLUDED
+        if (is_bool($alreadyLoaded) && $alreadyLoaded) {
+            $class = self::resolveFQNFromParsing($filePath);
+        } //PREFERRED & MOST RELIABLE DETECTION METHOD
+        else {
+            $class = collect(get_declared_classes())
+                ->diff($classes)
+                ->last();
         }
 
+        //THIRD DETECTION METHOD. HAPPENS WHEN CLASS NAME IS DIFFERENT FROM FILENAME. (UNLIKELY)
         if ($class === null) {
-            //TODO parse class with tokenizer and extract namespace
+            $class = self::resolveFQNFromParsing($path);
+        }
+
+        //This shouldn't happen!
+        if ($class === null) {
             throw new \RuntimeException('Could not extract fully qualified namespace from filepath. Please make an issue if you encounter this issue at https://github.com/larapie/core');
         }
 
-        return tap($class, function ($class) use ($path) {
-            self::$resolved[$path] = $class;
+        if (Str::startsWith($class, '\\'))
+            $class = Str::replaceFirst('\\', '', $class);
+
+        return tap($class, function ($class) use ($filePath) {
+            self::$resolved[$filePath] = $class;
         });
+    }
+
+    protected static function getClasses()
+    {
+        if (!isset(self::$classes))
+            self::$classes = collect(get_declared_classes())
+                ->filter(function ($class) {
+                    return Str::startsWith($class, Larapie::getFoundation()->getNamespace()) ||
+                        Str::startsWith($class, Larapie::getModules()->getNamespace()) ||
+                        Str::startsWith($class, Larapie::getPackages()->getNamespace());
+                });
+        return self::$classes;
+    }
+
+    protected function resolveFromDeclaredClasses(string $filePath): ?string
+    {
+        $filePath = strtolower($filePath);
+        $pathinfo = pathinfo($filePath);
+        $class = self::getClasses()->each(function (string $currentClass) use ($pathinfo, $filePath) {
+            if (Str::endsWith(strtolower($currentClass), $fileName = $pathinfo['filename'])) {
+                $matches = 0;
+                $class = null;
+                $currentMatches = 0;
+                collect($exploded = explode('\\', strtolower($currentClass)))
+                    ->slice(0, -1)
+                    ->reverse()
+                    ->each(function ($partOfNamespace) use ($filePath, $fileName, &$matches, $currentClass, &$class, &$currentMatches) {
+                        $explodedpath = explode('/', $filePath);
+                        if (!array_key_exists($key = (count($explodedpath) - 2 - $currentMatches), $explodedpath)) {
+                            $currentMatches = 0;
+                            return false;
+                        }
+                        $currentPathComparison = $explodedpath[count($explodedpath) - 2 - $currentMatches];
+                        if (Str::is($currentPathComparison, $partOfNamespace)) {
+                            $currentMatches++;
+                            if ($currentMatches > $matches) {
+                                $class = $currentClass;
+                                $matches = $currentMatches;
+                                return;
+                            }
+                        } else {
+                            $currentMatches = 0;
+                            return false;
+                        }
+                    });
+            }
+        });
+    }
+
+    protected static function resolveFQNFromParsing(string $file): string
+    {
+        $fp = fopen($file, 'r');
+        $class = $namespace = $buffer = '';
+        $i = 0;
+        while (!$class) {
+            if (feof($fp)) break;
+
+            $buffer .= fread($fp, 512);
+            $tokens = token_get_all($buffer);
+
+            if (strpos($buffer, '{') === false) continue;
+
+            for (; $i < count($tokens); $i++) {
+                if ($tokens[$i][0] === T_NAMESPACE) {
+                    for ($j = $i + 1; $j < count($tokens); $j++) {
+                        if ($tokens[$j][0] === T_STRING) {
+                            $namespace .= '\\' . $tokens[$j][1];
+                        } else if ($tokens[$j] === '{' || $tokens[$j] === ';') {
+                            break;
+                        }
+                    }
+                }
+
+                if ($tokens[$i][0] === T_CLASS) {
+                    for ($j = $i + 1; $j < count($tokens); $j++) {
+                        if ($tokens[$j] === '{') {
+                            $class = $tokens[$i + 2][1];
+                        }
+                    }
+                }
+            }
+        }
+        return $namespace . '\\' . $class;
     }
 }

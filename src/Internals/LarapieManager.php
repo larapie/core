@@ -2,84 +2,53 @@
 
 namespace Larapie\Core\Internals;
 
-use Illuminate\Support\Str;
-
 class LarapieManager
 {
+    private static $modules;
+    private static $packages;
+
     /**
-     * @return Module[]
+     * @return Module[] | Modules
      */
     public function getModules()
     {
-        $modules = [];
-
-        foreach (self::getModuleNames() as $module) {
-            $modules[$module] = $this->createModule($module);
+        if(!isset(self::$modules)){
+            self::$modules = new Modules();
         }
-
-        return $modules;
+        return self::$modules;
     }
 
+
+
     /**
-     * @return Package[]
+     * @return Package[] | Packages
      */
     public function getPackages()
     {
-        $packages = [];
-
-        foreach (self::getPackageNames() as $package) {
-            $packages[$package] = $this->createPackage($package);
+        if(!isset(self::$packages)){
+            self::$packages = new Packages();
         }
-
-        return $packages;
+        return self::$packages;
     }
 
     /**
      * @param string $name
-     *
+     * @deprecated
      * @return Module
      */
     public function getModule(string $name): ?Module
     {
-        $name = Str::studly($name);
-        $modules = $this->getModules();
-
-        if (array_key_exists($name, $modules)) {
-            return $modules[$name];
-        }
-
-        return null;
-    }
-
-    protected function createModule($name): Module
-    {
-        $name = Str::studly($name);
-
-        return new Module($name, $this->getModulePath($name));
-    }
-
-    protected function createPackage($name): Package
-    {
-        $name = Str::studly($name);
-
-        return new Package($name, $this->getPackagePath($name));
+        return $this->getModules()->get($name,null);
     }
 
     /**
      * @param string $name
-     *
+     * @deprecated
      * @return Package
      */
     public function getPackage(string $name): ?Package
     {
-        $name = Str::studly($name);
-        $packages = $this->getPackages();
-
-        if (array_key_exists($name, $packages)) {
-            return $packages[$name];
-        }
-
-        return null;
+        return $this->getPackages()->get($name,null);
     }
 
     public function getFoundation(): Foundation
@@ -87,34 +56,26 @@ class LarapieManager
         return new Foundation();
     }
 
-    protected function scanDirectoryForFolders($path)
-    {
-        if (file_exists($path) && is_dir($path)) {
-            return array_diff(scandir($path), ['..', '.']);
-        }
-
-        return [];
-    }
-
     /**
      * @return string[]
      */
     public function getModuleNames(): array
     {
-        return $this->scanDirectoryForFolders($this->getModulesBasePath());
+        return $this->getModules()->getNames();
     }
 
     /**
      * @return string[]
+     * @deprecated
      */
     public function getPackageNames(): array
     {
-        return $this->scanDirectoryForFolders($this->getPackagesBasePath());
+        return $this->getPackages()->getNames();
     }
 
     /**
      * @param string $module
-     *
+     * @deprecated
      * @return string
      */
     public function getModulePath(string $module): string
@@ -124,7 +85,7 @@ class LarapieManager
 
     /**
      * @param string $package
-     *
+     * @deprecated
      * @return string
      */
     public function getPackagePath(string $package): string
@@ -133,6 +94,7 @@ class LarapieManager
     }
 
     /**
+     * @deprecated
      * @return string
      */
     public function getModulesBasePath(): string
@@ -141,6 +103,7 @@ class LarapieManager
     }
 
     /**
+     * @deprecated
      * @return string
      */
     public function getPackagesBasePath(): string

@@ -24,14 +24,14 @@ class BootstrapServiceProvider extends ServiceProvider
     {
         $service = $this->loadService();
 
+        $this->registerConfigs($service->getConfigs());
         $this->registerCommands($service->getCommands());
         $this->registerListeners($service->getEvents());
-        $this->registerRoutes($service->getRoutes());
         $this->registerMigrations($service->getMigrations());
-        $this->registerConfigs($service->getConfigs());
         $this->registerFactories($service->getFactories());
         $this->registerPolicies($service->getModels());
         $this->registerObservers($service->getModels());
+        $this->registerRoutes($service->getRoutes());
 
         /*
          * Override the seed command with the larapi custom one.

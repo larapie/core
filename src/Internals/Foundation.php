@@ -8,6 +8,8 @@
 
 namespace Larapie\Core\Internals;
 
+use Illuminate\Support\Str;
+
 class Foundation
 {
     /**
@@ -35,11 +37,13 @@ class Foundation
 
     public function getComposerFilePath()
     {
-        return $this->getPath().'/composer.json';
+        return $this->getPath() . '/composer.json';
     }
 
     public function getNamespace(): string
     {
-        return config('larapie.foundation.namespace');
+        if (Str::startsWith($namespace = config('larapie.foundation.namespace'),'\\'))
+            return Str::replaceFirst('\\', '', $namespace);
+        return $namespace;
     }
 }
