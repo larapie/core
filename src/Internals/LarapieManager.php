@@ -12,43 +12,47 @@ class LarapieManager
      */
     public function getModules()
     {
-        if(!isset(self::$modules)){
+        if (!isset(self::$modules)) {
             self::$modules = new Modules();
         }
+
         return self::$modules;
     }
-
-
 
     /**
      * @return Package[] | Packages
      */
     public function getPackages()
     {
-        if(!isset(self::$packages)){
+        if (!isset(self::$packages)) {
             self::$packages = new Packages();
         }
+
         return self::$packages;
     }
 
     /**
      * @param string $name
+     *
      * @deprecated
+     *
      * @return Module
      */
     public function getModule(string $name): ?Module
     {
-        return $this->getModules()->get($name,null);
+        return $this->getModules()->get($name, null);
     }
 
     /**
      * @param string $name
+     *
      * @deprecated
+     *
      * @return Package
      */
     public function getPackage(string $name): ?Package
     {
-        return $this->getPackages()->get($name,null);
+        return $this->getPackages()->get($name, null);
     }
 
     public function getFoundation(): Foundation
@@ -66,6 +70,7 @@ class LarapieManager
 
     /**
      * @return string[]
+     *
      * @deprecated
      */
     public function getPackageNames(): array
@@ -75,7 +80,9 @@ class LarapieManager
 
     /**
      * @param string $module
+     *
      * @deprecated
+     *
      * @return string
      */
     public function getModulePath(string $module): string
@@ -85,7 +92,9 @@ class LarapieManager
 
     /**
      * @param string $package
+     *
      * @deprecated
+     *
      * @return string
      */
     public function getPackagePath(string $package): string
@@ -95,6 +104,7 @@ class LarapieManager
 
     /**
      * @deprecated
+     *
      * @return string
      */
     public function getModulesBasePath(): string
@@ -104,6 +114,7 @@ class LarapieManager
 
     /**
      * @deprecated
+     *
      * @return string
      */
     public function getPackagesBasePath(): string

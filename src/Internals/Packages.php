@@ -29,8 +29,9 @@ class Packages extends Collection
     protected function find(string $packageName): Package
     {
         return tap($this->get(strtolower($packageName), null), function ($package) {
-            if ($package === null)
-                throw new \RuntimeException("module does not exist");
+            if ($package === null) {
+                throw new \RuntimeException('module does not exist');
+            }
         });
     }
 
@@ -60,7 +61,8 @@ class Packages extends Collection
     protected function createPackage($name): Module
     {
         $name = Str::studly($name);
-        return new Package($name, $this->getBasePath() . '/' . $name);
+
+        return new Package($name, $this->getBasePath().'/'.$name);
     }
 
     protected function scanDirectoryForFolders($path)
@@ -74,8 +76,10 @@ class Packages extends Collection
 
     public function getNamespace(): string
     {
-        if (Str::startsWith($namespace = config('larapie.packages.namespace'), '\\'))
+        if (Str::startsWith($namespace = config('larapie.packages.namespace'), '\\')) {
             return Str::replaceFirst('\\', '', $namespace);
+        }
+
         return $namespace;
     }
 }

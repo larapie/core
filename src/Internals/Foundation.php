@@ -37,13 +37,15 @@ class Foundation
 
     public function getComposerFilePath()
     {
-        return $this->getPath() . '/composer.json';
+        return $this->getPath().'/composer.json';
     }
 
     public function getNamespace(): string
     {
-        if (Str::startsWith($namespace = config('larapie.foundation.namespace'),'\\'))
+        if (Str::startsWith($namespace = config('larapie.foundation.namespace'), '\\')) {
             return Str::replaceFirst('\\', '', $namespace);
+        }
+
         return $namespace;
     }
 }

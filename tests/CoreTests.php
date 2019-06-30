@@ -31,7 +31,7 @@ class CoreTests extends TestCase
     {
         $path = Larapie::getFoundation()->getComposerFilePath();
         $this->assertEquals(
-            base_path(config('larapie.foundation.path')) . '/composer.json',
+            base_path(config('larapie.foundation.path')).'/composer.json',
             $path
         );
     }
@@ -44,7 +44,7 @@ class CoreTests extends TestCase
 
     public function testResolveAlreadyIncludedClass()
     {
-        Config::set('larapie.foundation.namespace','Larapie\\Core');
+        Config::set('larapie.foundation.namespace', 'Larapie\\Core');
         $path = base_path('src/Resolvers/FQNResolver.php');
         $class = FQNResolver::resolve($path);
         $this->assertEquals(FQNResolver::class, $class);
@@ -52,7 +52,7 @@ class CoreTests extends TestCase
 
     public function testResolveClass()
     {
-        Config::set('larapie.foundation.namespace','Larapie\\Core');
+        Config::set('larapie.foundation.namespace', 'Larapie\\Core');
         $path = base_path('src/Base/Controller.php');
         $class = FQNResolver::resolve($path);
         $this->assertEquals(Controller::class, $class);
