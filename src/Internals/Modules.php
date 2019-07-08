@@ -26,7 +26,12 @@ class Modules extends Collection
         }
     }
 
-    public function find(string $moduleName) : Module
+    public function get($name, $default = null)
+    {
+        return parent::get(strtolower($name), $default);
+    }
+
+    public function find(string $moduleName): Module
     {
         return tap($this->get(strtolower($moduleName), null), function ($module) {
             if ($module === null) {
@@ -62,7 +67,7 @@ class Modules extends Collection
     {
         $name = Str::studly($name);
 
-        return new Module($name, $this->getBasePath().'/'.$name);
+        return new Module($name, $this->getBasePath() . '/' . $name);
     }
 
     protected function scanDirectoryForFolders($path)

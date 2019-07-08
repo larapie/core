@@ -50,6 +50,11 @@ class Packages extends Collection
         });
     }
 
+    public function get($name, $default = null)
+    {
+        return parent::get(strtolower($name), $default);
+    }
+
     /**
      * @return string
      */
