@@ -12,12 +12,23 @@ class LarapieManager
      */
     public function getModules()
     {
-        if(!isset(self::$modules)){
+        if (!isset(self::$modules)) {
             self::$modules = new Modules();
         }
         return self::$modules;
     }
 
+    /**
+     * Resets the current instances of modules & packages.
+     * Useful in some cases when you dynamically generate new modules / packages
+     *
+     * @return void
+     */
+    public function clear()
+    {
+        self::$modules = null;
+        self::$packages = null;
+    }
 
 
     /**
@@ -25,7 +36,7 @@ class LarapieManager
      */
     public function getPackages()
     {
-        if(!isset(self::$packages)){
+        if (!isset(self::$packages)) {
             self::$packages = new Packages();
         }
         return self::$packages;
@@ -33,22 +44,22 @@ class LarapieManager
 
     /**
      * @param string $name
-     * @deprecated
      * @return Module
+     * @deprecated
      */
     public function getModule(string $name): ?Module
     {
-        return $this->getModules()->get($name,null);
+        return $this->getModules()->get($name, null);
     }
 
     /**
      * @param string $name
-     * @deprecated
      * @return Package
+     * @deprecated
      */
     public function getPackage(string $name): ?Package
     {
-        return $this->getPackages()->get($name,null);
+        return $this->getPackages()->get($name, null);
     }
 
     public function getFoundation(): Foundation
@@ -75,27 +86,27 @@ class LarapieManager
 
     /**
      * @param string $module
-     * @deprecated
      * @return string
+     * @deprecated
      */
     public function getModulePath(string $module): string
     {
-        return self::getModulesBasePath().'/'.$module;
+        return self::getModulesBasePath() . '/' . $module;
     }
 
     /**
      * @param string $package
-     * @deprecated
      * @return string
+     * @deprecated
      */
     public function getPackagePath(string $package): string
     {
-        return self::getPackagesBasePath().'/'.$package;
+        return self::getPackagesBasePath() . '/' . $package;
     }
 
     /**
-     * @deprecated
      * @return string
+     * @deprecated
      */
     public function getModulesBasePath(): string
     {
@@ -103,8 +114,8 @@ class LarapieManager
     }
 
     /**
-     * @deprecated
      * @return string
+     * @deprecated
      */
     public function getPackagesBasePath(): string
     {
@@ -118,6 +129,6 @@ class LarapieManager
 
     public function getApiUrl(): string
     {
-        return config('larapie.api_url') === null ? config('app.url').'/api' : config('larapie.api_url');
+        return config('larapie.api_url') === null ? config('app.url') . '/api' : config('larapie.api_url');
     }
 }

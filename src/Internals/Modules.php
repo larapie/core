@@ -26,7 +26,7 @@ class Modules extends Collection
         }
     }
 
-    protected function find(string $moduleName) : Module
+    public function find(string $moduleName) : Module
     {
         return tap($this->get(strtolower($moduleName), null), function ($module) {
             if ($module === null)
