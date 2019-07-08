@@ -9,8 +9,6 @@ use Larapie\Core\Internals\Packages;
 
 /**
  * @method static \Larapie\Core\Internals\Module[] | Modules getModules()
- * @method static \Larapie\Core\Internals\Module getModule(string $module)
- * @method static \Larapie\Core\Internals\Module getPackage(string $module)
  * @method static \Larapie\Core\Internals\Package[] | Packages getPackages()
  * @method static string[] getModuleNames()
  * @method static string[] getPackageNames()

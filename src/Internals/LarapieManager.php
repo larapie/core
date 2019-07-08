@@ -52,7 +52,7 @@ class LarapieManager
      */
     public function getModule(string $name): ?Module
     {
-        return $this->getModules()->get($name, null);
+        return $this->getModules()->get(strtolower($name), null);
     }
 
     /**
@@ -64,7 +64,7 @@ class LarapieManager
      */
     public function getPackage(string $name): ?Package
     {
-        return $this->getPackages()->get($name, null);
+        return $this->getPackages()->get(strtolower($name), null);
     }
 
     public function getFoundation(): Foundation
