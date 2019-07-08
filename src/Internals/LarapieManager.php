@@ -15,12 +15,13 @@ class LarapieManager
         if (!isset(self::$modules)) {
             self::$modules = new Modules();
         }
+
         return self::$modules;
     }
 
     /**
      * Resets the current instances of modules & packages.
-     * Useful in some cases when you dynamically generate new modules / packages
+     * Useful in some cases when you dynamically generate new modules / packages.
      *
      * @return void
      */
@@ -30,7 +31,6 @@ class LarapieManager
         self::$packages = null;
     }
 
-
     /**
      * @return Package[] | Packages
      */
@@ -39,12 +39,15 @@ class LarapieManager
         if (!isset(self::$packages)) {
             self::$packages = new Packages();
         }
+
         return self::$packages;
     }
 
     /**
      * @param string $name
+     *
      * @return Module
+     *
      * @deprecated
      */
     public function getModule(string $name): ?Module
@@ -54,7 +57,9 @@ class LarapieManager
 
     /**
      * @param string $name
+     *
      * @return Package
+     *
      * @deprecated
      */
     public function getPackage(string $name): ?Package
@@ -77,6 +82,7 @@ class LarapieManager
 
     /**
      * @return string[]
+     *
      * @deprecated
      */
     public function getPackageNames(): array
@@ -86,26 +92,31 @@ class LarapieManager
 
     /**
      * @param string $module
+     *
      * @return string
+     *
      * @deprecated
      */
     public function getModulePath(string $module): string
     {
-        return self::getModulesBasePath() . '/' . $module;
+        return self::getModulesBasePath().'/'.$module;
     }
 
     /**
      * @param string $package
+     *
      * @return string
+     *
      * @deprecated
      */
     public function getPackagePath(string $package): string
     {
-        return self::getPackagesBasePath() . '/' . $package;
+        return self::getPackagesBasePath().'/'.$package;
     }
 
     /**
      * @return string
+     *
      * @deprecated
      */
     public function getModulesBasePath(): string
@@ -115,6 +126,7 @@ class LarapieManager
 
     /**
      * @return string
+     *
      * @deprecated
      */
     public function getPackagesBasePath(): string
@@ -129,6 +141,6 @@ class LarapieManager
 
     public function getApiUrl(): string
     {
-        return config('larapie.api_url') === null ? config('app.url') . '/api' : config('larapie.api_url');
+        return config('larapie.api_url') === null ? config('app.url').'/api' : config('larapie.api_url');
     }
 }
