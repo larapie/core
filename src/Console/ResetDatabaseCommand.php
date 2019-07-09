@@ -38,18 +38,37 @@ class ResetDatabaseCommand extends Command
         }
 
         if ($proceed) {
-            $this->line($this->call('cache:clear'));
-            $this->info('cleared cache');
-
-            $this->line($this->call('migrate:fresh'));
-            $this->info('database reset');
-
-            if ($this->option('seed')) {
-                $this->line($this->call('db:seed'));
-                $this->info('database seeded');
-            }
+            $this->reset();
         }
 
         $this->info('Application successfully reset!');
+    }
+
+    protected function reset()
+    {
+        $this->resetCache();
+        $this->resetDatabase();
+
+        if ($this->option('seed')) {
+            $this->seedDatabase();
+        }
+    }
+
+    protected function resetCache()
+    {
+        $this->line($this->call('cache:clear'));
+        $this->info('cleared cache');
+    }
+
+    protected function resetDatabase()
+    {
+        $this->line($this->call('migrate:fresh'));
+        $this->info('database reset');
+    }
+
+    protected function seedDatabase()
+    {
+        $this->line($this->call('db:seed'));
+        $this->info('database seeded');
     }
 }
