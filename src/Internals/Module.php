@@ -9,6 +9,7 @@
 namespace Larapie\Core\Internals;
 
 use Larapie\Core\Collections\ResourceCollection;
+use Larapie\Core\Resources\ActionResource;
 use Larapie\Core\Resources\AttributeResource;
 use Larapie\Core\Resources\CommandResource;
 use Larapie\Core\Resources\ConfigResource;
@@ -93,6 +94,14 @@ class Module
     public function getListeners()
     {
         return $this->createResourceCollection(config('larapie.resources.listeners'), ListenerResource::class);
+    }
+
+    /**
+     * @return ListenerResource[] | ResourceCollection
+     */
+    public function getActions()
+    {
+        return $this->createResourceCollection(config('larapie.resources.actions'), ActionResource::class);
     }
 
     /**
