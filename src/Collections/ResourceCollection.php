@@ -3,6 +3,7 @@
 namespace Larapie\Core\Collections;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Larapie\Core\Abstracts\ClassResource;
 use Larapie\Core\Abstracts\Resource;
 use Larapie\Core\Internals\Module;
@@ -86,7 +87,7 @@ class ResourceCollection extends Collection
     {
         $collection = new static();
         $collection->setPath($path);
-        $collection->setNamespace(str_replace('/', '\\', $module->getNamespace().str_replace($module->getPath(), '', $path)));
+        $collection->setNamespace(str_replace('/', '\\', $module->getNamespace() . str_replace($module->getPath(), '', $path)));
         $collection->setType($resourceType);
         $collection->setModule($module);
 
@@ -97,8 +98,8 @@ class ResourceCollection extends Collection
         }
 
         foreach ($files as $file) {
-            if (pathinfo($path.'/'.$file)['extension'] === 'php') {
-                $resource = new $resourceType($path.'/'.$file, $module);
+            if (pathinfo($path . '/' . $file)['extension'] === 'php') {
+                $resource = new $resourceType($path . '/' . $file, $module);
                 if ($resource->isValid()) {
                     $collection->add($resource);
                 }
@@ -145,6 +146,11 @@ class ResourceCollection extends Collection
     public function getNamespace()
     {
         return $this->namespace;
+    }
+
+    public function getFilteredNamespace()
+    {
+        return Str::startsWith('\\', $this->namespace) ? Str::replaceFirst('\\', '', $this->namespace) : $this->namespace;
     }
 
     protected function setNamespace(string $namespace)
