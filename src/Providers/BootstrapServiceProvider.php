@@ -206,17 +206,23 @@ class BootstrapServiceProvider extends ServiceProvider
 
     protected function registerRoutesByServiceProvider(array $providers, array $routes)
     {
-        $routeServiceProvider = collect($providers)
-            ->filter(function (array $provider) {
+        $routes = collect($routes)
+            ->groupBy('module');
+
+        $providers = collect($providers)
+            ->filter(function ($provider) {
                 return $provider['routes'];
             })
-            ->first();
-
-        if ($routeServiceProvider !== null) {
-            collect($routes)->each(function ($route) use ($routeServiceProvider) {
-                call_class_function($routeServiceProvider['fqn'], 'routes', $route['path']);
+            ->groupBy('module')
+            ->intersectByKeys($routes)
+            ->each(function ($providers, $moduleName) use ($routes) {
+                $routeServiceProvider = $providers->first()['fqn'];
+                $routes
+                    ->whereIn('module', $moduleName)
+                    ->each(function ($route) use ($routeServiceProvider) {
+                        call_class_function($routeServiceProvider, 'routes', $route['path']);
+                    });
             });
-        }
     }
 
     protected function overrideSeedCommand(\Illuminate\Contracts\Foundation\Application $app, Bootstrapping $service)
