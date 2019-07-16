@@ -214,7 +214,7 @@ class BootstrapServiceProvider extends ServiceProvider
 
         if ($routeServiceProvider !== null) {
             collect($routes)->each(function ($route) use ($routeServiceProvider) {
-                call_class_function($routeServiceProvider, 'routes', $route['path']);
+                call_class_function($routeServiceProvider['fqn'], 'routes', $route['path']);
             });
         }
     }
