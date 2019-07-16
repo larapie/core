@@ -131,7 +131,7 @@ class BootstrapServiceProvider extends ServiceProvider
                 if (($middleware = $route['middleware_group']) !== null) {
                     $providerClass = $this->getRouteProviderClass();
                     $provider = new $providerClass($this->app);
-                    $method = 'map'.ucfirst(strtolower($route['middleware_group']).'Routes');
+                    $method = 'map' . ucfirst(strtolower($route['middleware_group']) . 'Routes');
 
                     if (method_exists($provider, $method)) {
                         $provider->$method($route['route_prefix'], $route['path']);
@@ -209,7 +209,7 @@ class BootstrapServiceProvider extends ServiceProvider
         $routes = collect($routes)
             ->groupBy('module');
 
-        $providers = collect($providers)
+        collect($providers)
             ->filter(function ($provider) {
                 return $provider['routes'];
             })
@@ -218,7 +218,7 @@ class BootstrapServiceProvider extends ServiceProvider
             ->each(function ($providers, $moduleName) use ($routes) {
                 $routeServiceProvider = $providers->first()['fqn'];
                 $routes
-                    ->whereIn('module', $moduleName)
+                    ->get($moduleName)
                     ->each(function ($route) use ($routeServiceProvider) {
                         call_class_function($routeServiceProvider, 'routes', $route['path']);
                     });
