@@ -115,7 +115,7 @@ if (!function_exists('instance_without_constructor')) {
 if (!function_exists('call_class_function')) {
     function call_class_function($class, string $methodName, $arguments = [])
     {
-        return call_user_func( array(instance_without_constructor($class),$methodName), $arguments);
+        return call_user_func([instance_without_constructor($class), $methodName], $arguments);
     }
 }
 

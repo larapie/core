@@ -131,10 +131,11 @@ class BootstrapServiceProvider extends ServiceProvider
                 if (($middleware = $route['middleware_group']) !== null) {
                     $providerClass = $this->getRouteProviderClass();
                     $provider = new $providerClass($this->app);
-                    $method = 'map' . ucfirst(strtolower($route['middleware_group']) . 'Routes');
+                    $method = 'map'.ucfirst(strtolower($route['middleware_group']).'Routes');
 
                     if (method_exists($provider, $method)) {
                         $provider->$method($route['route_prefix'], $route['path']);
+
                         return;
                     }
                 }
