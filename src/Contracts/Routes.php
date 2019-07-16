@@ -9,5 +9,5 @@ interface Routes
      *
      * @return string[]
      */
-    public function routes(array $paths): array;
+    public function routes(string $path): array;
 }
