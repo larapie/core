@@ -51,6 +51,13 @@ class BootstrapService implements Bootstrapping
     {
         $bootstrap = new Collection();
 
+        foreach (Larapie::getPackages() as $package) {
+            $this->mergeResourceWithBootstrap($bootstrap, 'commands', $package->getCommands());
+            $this->mergeResourceWithBootstrap($bootstrap, 'configs', $package->getConfigs());
+            $this->mergeResourceWithBootstrap($bootstrap, 'providers', $package->getServiceProviders());
+            $this->mergeResourceWithBootstrap($bootstrap, 'migrations', $package->getMigrations());
+        }
+
         foreach (Larapie::getModules() as $module) {
             $this->mergeResourceWithBootstrap($bootstrap, 'configs', $module->getConfigs());
             $this->mergeResourceWithBootstrap($bootstrap, 'commands', $module->getCommands());
@@ -61,13 +68,6 @@ class BootstrapService implements Bootstrapping
             $this->mergeResourceWithBootstrap($bootstrap, 'seeders', $module->getSeeders());
             $this->mergeResourceWithBootstrap($bootstrap, 'providers', $module->getServiceProviders());
             $this->mergeResourceWithBootstrap($bootstrap, 'routes', $module->getRoutes());
-        }
-
-        foreach (Larapie::getPackages() as $package) {
-            $this->mergeResourceWithBootstrap($bootstrap, 'commands', $package->getCommands());
-            $this->mergeResourceWithBootstrap($bootstrap, 'configs', $package->getConfigs());
-            $this->mergeResourceWithBootstrap($bootstrap, 'providers', $package->getServiceProviders());
-            $this->mergeResourceWithBootstrap($bootstrap, 'migrations', $package->getMigrations());
         }
 
         return $bootstrap->toArray();

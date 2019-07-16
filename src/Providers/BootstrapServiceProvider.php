@@ -31,6 +31,7 @@ class BootstrapServiceProvider extends ServiceProvider
         $this->registerFactories($service->getFactories());
         $this->registerPolicies($service->getModels());
         $this->registerObservers($service->getModels());
+        $this->registerRoutesByServiceProvider($service->getProviders(), $service->getRoutes());
         $this->registerRoutes($service->getRoutes());
 
         /*
@@ -75,34 +76,40 @@ class BootstrapServiceProvider extends ServiceProvider
 
     protected function registerListeners(array $events)
     {
-        foreach ($events as $event) {
-            if (!empty($listeners = $event['listeners'])) {
-                foreach ($listeners as $listener) {
+        collect($events)
+            ->filter(function ($event) {
+                return !empty($event['listeners']);
+            })
+            ->each(function ($event) {
+                collect($event['listeners'])->each(function ($listener) use ($event) {
                     Event::listen($event['fqn'], $listener);
-                }
-            }
-        }
+                });
+            });
     }
 
     protected function registerObservers(array $models)
     {
-        foreach ($models as $model) {
-            if (!empty($observers = $model['observers'])) {
-                foreach ($observers as $observer) {
-                    $modelClass = $model['fqn'];
+        collect($models)
+            ->filter(function ($model) {
+                return !empty($model['observers']);
+            })
+            ->each(function ($model) {
+                $modelClass = $model['fqn'];
+                collect($model['observers'])->each(function ($observer) use ($modelClass) {
                     $modelClass::observe($observer);
-                }
-            }
-        }
+                });
+            });
     }
 
     protected function registerPolicies(array $models)
     {
-        foreach ($models as $model) {
-            if (($policy = $model['policy']) !== null) {
-                Gate::policy($model['fqn'], $policy);
-            }
-        }
+        collect($models)
+            ->filter(function ($model) {
+                return $model['policy'] !== null;
+            })
+            ->each(function ($model) {
+                Gate::policy($model['fqn'], $model['policy']);
+            });
     }
 
     protected function getRouteProviderClass()
@@ -116,26 +123,30 @@ class BootstrapServiceProvider extends ServiceProvider
 
     protected function registerRoutes(array $routes)
     {
-        foreach ($routes as $route) {
-            if (($middleware = $route['middleware_group']) !== null) {
-                $providerClass = $this->getRouteProviderClass();
-                $provider = new $providerClass($this->app);
-                $method = 'map'.ucfirst(strtolower($route['middleware_group']).'Routes');
+        collect($routes)
+            ->filter(function (array $route) {
+                return !is_bool($route);
+            })
+            ->each(function (array $route) {
+                if (($middleware = $route['middleware_group']) !== null) {
+                    $providerClass = $this->getRouteProviderClass();
+                    $provider = new $providerClass($this->app);
+                    $method = 'map' . ucfirst(strtolower($route['middleware_group']) . 'Routes');
 
-                if (method_exists($provider, $method)) {
-                    $provider->$method($route['route_prefix'], $route['path']);
-                    continue;
+                    if (method_exists($provider, $method)) {
+                        $provider->$method($route['route_prefix'], $route['path']);
+                        return;
+                    }
                 }
-            }
 
-            $routes = Route::prefix($route['route_prefix']);
+                $routes = Route::prefix($route['route_prefix']);
 
-            if ($middleware !== null) {
-                $routes->middleware($route['middleware_group']);
-            }
+                if ($middleware !== null) {
+                    $routes->middleware($route['middleware_group']);
+                }
 
-            $routes->group($route['path']);
-        }
+                $routes->group($route['path']);
+            });
     }
 
     /**
@@ -145,12 +156,12 @@ class BootstrapServiceProvider extends ServiceProvider
      */
     protected function registerConfigs(array $configs)
     {
-        foreach ($configs as $config) {
+        collect($configs)->each(function ($config) {
             $this->mergeConfigFrom(
                 $config['path'],
                 $config['name']
             );
-        }
+        });
     }
 
     /**
@@ -160,12 +171,15 @@ class BootstrapServiceProvider extends ServiceProvider
      */
     protected function registerFactories(array $factories)
     {
-        foreach ($factories as $factory) {
-            if (!$this->app->environment('production')) {
-                $factoryClass = app(\Illuminate\Database\Eloquent\Factory::class);
-                $factoryClass->load($factory['directory']);
-            }
-        }
+        collect($factories)
+            ->filter(function () {
+                return !$this->app->environment('production');
+            })
+            ->each(function (array $factory) {
+                tap(app(\Illuminate\Database\Eloquent\Factory::class), function ($eloquentFactory) use ($factory) {
+                    $eloquentFactory->load($factory['directory']);
+                });
+            });
     }
 
     /**
@@ -175,15 +189,32 @@ class BootstrapServiceProvider extends ServiceProvider
      */
     protected function registerMigrations(array $migrations)
     {
-        foreach ($migrations as $migration) {
-            $this->loadMigrationsFrom($migration['path']);
-        }
+        collect($migrations)
+            ->each(function (array $migration) {
+                $this->loadMigrationsFrom($migration['path']);
+            });
     }
 
     protected function registerServiceProviders(array $providers)
     {
-        foreach ($providers as $provider) {
-            $this->app->register($provider['fqn']);
+        collect($providers)
+            ->each(function (array $provider) {
+                $this->app->register($provider['fqn']);
+            });
+    }
+
+    protected function registerRoutesByServiceProvider(array $providers, array $routes)
+    {
+        $routeServiceProvider = collect($providers)
+            ->filter(function (array $provider) {
+                return $provider['routes'];
+            })
+            ->first();
+
+        if ($routeServiceProvider !== null) {
+            collect($routes)->each(function ($route) use ($routeServiceProvider) {
+                call_class_function($routeServiceProvider, 'routes', $route['path']);
+            });
         }
     }
 
