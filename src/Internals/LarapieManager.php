@@ -144,13 +144,16 @@ class LarapieManager
         $url = config('larapie.api_url');
 
         if (($sub = config('larapie.api_subdomain')) !== null) {
-            if ($url === null)
-                return $sub . '.'.$this->getAppUrl();
-            return $sub . '.' . $url;
+            if ($url === null) {
+                return $sub.'.'.$this->getAppUrl();
+            }
+
+            return $sub.'.'.$url;
         }
 
-        if ($url === null)
+        if ($url === null) {
             return $this->getAppUrl().'/api';
+        }
 
         return $url;
     }
