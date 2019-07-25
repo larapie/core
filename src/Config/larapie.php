@@ -7,12 +7,24 @@ return [
     | Api Domain
     |--------------------------------------------------------------------------
     |
-    | This value is the domain that will be used to register the routes in the api group.
-    | Setting this value to something other than null will also remove the 'api' prefix.
+    | This value is the domain host name that will be used to register the routes in the api group.
+    | Set this value to null if you want to allow access from multiple domains.
     |
     */
 
     'api_url' => env('API_URL', null),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Api Subdomain
+    |--------------------------------------------------------------------------
+    |
+    | This value is the subdomain that will be used to register the routes in the api group.
+    | Setting this value to null will result in using a 'api' prefix instead of a subdomain.
+    |
+    */
+
+    'api_subdomain' => env('API_SUBDOMAIN', 'api'),
 
     /*
     |--------------------------------------------------------------------------

@@ -34,11 +34,27 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function mapApiRoutes(string $prefix, string $path)
+    public function mapApiRoutes(string $prefix, string $path, $auth = true)
     {
-        Route::middleware('api')
-            ->domain((new LarapieManager())->getApiUrl())
-            ->prefix(config('larapie.api_url') === null ? 'api/'.$prefix : $prefix)
+        Route::middleware('api' . ($auth ? '' : ':noauth'))
+            ->domain($this->generateApiDomain())
+            ->prefix(config('larapie.api_subdomain') === null ? 'api/' . $prefix : $prefix)
             ->group($path);
+    }
+
+    protected function generateApiDomain()
+    {
+        $url = config('larapie.api_url');
+
+        if (($sub = config('larapie.api_subdomain')) !== null) {
+            if ($url === null)
+                return $sub . '.{domain}.{tld}';
+            return $sub . '.' . $url;
+        }
+
+        if ($url === null)
+            return '{domain}.{tld}';
+
+        return $url;
     }
 }
