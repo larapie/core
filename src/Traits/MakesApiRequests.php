@@ -13,6 +13,6 @@ trait MakesApiRequests
             throw new \Exception('Invalid Http Method');
         }
 
-        return new TestResponse($this->json($method, Larapie::getApiUrl() . $route, $payload, $headers)->baseResponse);
+        return new TestResponse($this->json($method, Larapie::getApiUrl().$route, $payload, $headers)->baseResponse);
     }
 }

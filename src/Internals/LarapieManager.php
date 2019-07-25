@@ -144,22 +144,25 @@ class LarapieManager
         $scheme = null;
         $apiUri = config('larapie.api_url');
 
-        if ($apiUri !== null)
-            $scheme = parse_url($apiUri)['scheme'] . "://";
-        else
-            $scheme = parse_url($appUri = $this->getAppUrl())['scheme'] . "://" ?? 'http://';
-
-
-        if (($sub = config('larapie.api_subdomain')) !== null) {
-            if ($apiUri === null)
-                return $scheme . $sub . '.' . parse_url($appUri, PHP_URL_HOST);
-            $this->getAppUrl();
-            return $scheme . $sub . '.' . $apiUri;
+        if ($apiUri !== null) {
+            $scheme = parse_url($apiUri)['scheme'].'://';
+        } else {
+            $scheme = parse_url($appUri = $this->getAppUrl())['scheme'].'://' ?? 'http://';
         }
 
-        if ($apiUri === null)
-            return $this->getAppUrl() . '/api';
+        if (($sub = config('larapie.api_subdomain')) !== null) {
+            if ($apiUri === null) {
+                return $scheme.$sub.'.'.parse_url($appUri, PHP_URL_HOST);
+            }
+            $this->getAppUrl();
 
-        return $scheme . $apiUri;
+            return $scheme.$sub.'.'.$apiUri;
+        }
+
+        if ($apiUri === null) {
+            return $this->getAppUrl().'/api';
+        }
+
+        return $scheme.$apiUri;
     }
 }
