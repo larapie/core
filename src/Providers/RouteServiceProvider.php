@@ -36,9 +36,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function mapApiRoutes(string $prefix, string $path, $auth = true)
     {
-        Route::middleware('api' . ($auth ? '' : ':noauth'))
+        Route::middleware('api'.($auth ? '' : ':noauth'))
             ->domain($this->generateApiDomain())
-            ->prefix(config('larapie.api_subdomain') === null ? 'api/' . $prefix : $prefix)
+            ->prefix(config('larapie.api_subdomain') === null ? 'api/'.$prefix : $prefix)
             ->group($path);
     }
 
@@ -47,13 +47,16 @@ class RouteServiceProvider extends ServiceProvider
         $url = config('larapie.api_url');
 
         if (($sub = config('larapie.api_subdomain')) !== null) {
-            if ($url === null)
-                return $sub . '.{domain}.{tld}';
-            return $sub . '.' . $url;
+            if ($url === null) {
+                return $sub.'.{domain}.{tld}';
+            }
+
+            return $sub.'.'.$url;
         }
 
-        if ($url === null)
+        if ($url === null) {
             return '{domain}.{tld}';
+        }
 
         return $url;
     }
