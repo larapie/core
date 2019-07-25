@@ -141,6 +141,17 @@ class LarapieManager
 
     public function getApiUrl(): string
     {
-        return config('larapie.api_url') === null ? config('app.url').'/api' : config('larapie.api_url');
+        $url = config('larapie.api_url');
+
+        if (($sub = config('larapie.api_subdomain')) !== null) {
+            if ($url === null)
+                return $sub . '.'.$this->getAppUrl();
+            return $sub . '.' . $url;
+        }
+
+        if ($url === null)
+            return $this->getAppUrl().'/api';
+
+        return $url;
     }
 }
