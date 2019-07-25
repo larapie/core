@@ -3,6 +3,7 @@
 namespace Larapie\Core\Traits;
 
 use Larapie\Core\Responses\TestResponse;
+use Larapie\Core\Support\Facades\Larapie;
 
 trait MakesApiRequests
 {
@@ -12,6 +13,6 @@ trait MakesApiRequests
             throw new \Exception('Invalid Http Method');
         }
 
-        return new TestResponse($this->json($method, env('API_URL').$route, $payload, $headers)->baseResponse);
+        return new TestResponse($this->json($method, Larapie::getApiUrl() . $route, $payload, $headers)->baseResponse);
     }
 }
