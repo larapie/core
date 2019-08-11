@@ -41,7 +41,7 @@ class FQNResolver
         }
 
         //THIRD DETECTION METHOD. HAPPENS WHEN CLASS NAME IS DIFFERENT FROM FILENAME. (UNLIKELY)
-        //NOTE: THROWS WARNING WHEN CLASS HAS DOCS. 
+        //NOTE: THROWS WARNING WHEN CLASS HAS DOCS.
         if ($class === null) {
             $class = self::resolveFQNFromParsing($filePath);
         }
@@ -106,10 +106,12 @@ class FQNResolver
                         } else {
                             $currentMatches = 0;
                         }
+
                         return false;
                     });
             }
         });
+
         return $class;
     }
 
