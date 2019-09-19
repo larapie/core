@@ -27,13 +27,12 @@ class FQNResolver
             throw new FileNotFoundException();
         }
         $class = null;
-        $classes = collect(get_declared_classes());
-        $path = $filePath;
+        $classes = self::getClasses();
         $alreadyLoaded = include_once $filePath;
 
         //SECOND DETECTION METHOD. HAPPENS WHEN CLASS IS ALREADY INCLUDED
         if (is_bool($alreadyLoaded) && $alreadyLoaded) {
-            $class = self::resolveFQNFromParsing($filePath);
+            $class = self::resolveFromDeclaredClasses($filePath);
         } //PREFERRED & MOST RELIABLE DETECTION METHOD
         else {
             $class = collect(get_declared_classes())
@@ -42,8 +41,9 @@ class FQNResolver
         }
 
         //THIRD DETECTION METHOD. HAPPENS WHEN CLASS NAME IS DIFFERENT FROM FILENAME. (UNLIKELY)
+        //NOTE: THROWS WARNING WHEN CLASS HAS DOCS.
         if ($class === null) {
-            $class = self::resolveFQNFromParsing($path);
+            $class = self::resolveFQNFromParsing($filePath);
         }
 
         //This shouldn't happen!
@@ -74,11 +74,12 @@ class FQNResolver
         return self::$classes;
     }
 
-    protected function resolveFromDeclaredClasses(string $filePath): ?string
+    protected static function resolveFromDeclaredClasses(string $filePath): ?string
     {
         $filePath = strtolower($filePath);
         $pathinfo = pathinfo($filePath);
-        $class = self::getClasses()->each(function (string $currentClass) use ($pathinfo, $filePath) {
+        $class = null;
+        self::getClasses()->each(function (string $currentClass) use ($pathinfo, $filePath, &$class) {
             if (Str::endsWith(strtolower($currentClass), $fileName = $pathinfo['filename'])) {
                 $matches = 0;
                 $class = null;
@@ -104,12 +105,14 @@ class FQNResolver
                             }
                         } else {
                             $currentMatches = 0;
-
-                            return false;
                         }
+
+                        return false;
                     });
             }
         });
+
+        return $class;
     }
 
     protected static function resolveFQNFromParsing(string $file): string
