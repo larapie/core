@@ -173,9 +173,6 @@ class BootstrapServiceProvider extends ServiceProvider
     protected function registerFactories(array $factories)
     {
         collect($factories)
-            ->filter(function () {
-                return !$this->app->environment('production');
-            })
             ->each(function (array $factory) {
                 tap(app(\Illuminate\Database\Eloquent\Factory::class), function ($eloquentFactory) use ($factory) {
                     $eloquentFactory->load($factory['directory']);
