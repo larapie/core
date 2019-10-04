@@ -72,11 +72,7 @@ class Packages extends Collection
 
     protected function scanDirectoryForFolders($path)
     {
-        if (file_exists($path) && is_dir($path)) {
-            return array_diff(scandir($path), ['..', '.']);
-        }
-
-        return [];
+        return file_exists($path) && is_dir($path) ? array_diff(scandir($path), ['..', '.']) : [];
     }
 
     public function getNamespace(): string
