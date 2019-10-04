@@ -67,7 +67,7 @@ class Modules extends Collection
     {
         $name = Str::studly($name);
 
-        return new Module($name, $this->getBasePath() . '/' . $name);
+        return new Module($name, $this->getBasePath().'/'.$name);
     }
 
     protected function scanDirectoryForFolders($path)

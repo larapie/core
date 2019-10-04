@@ -87,17 +87,15 @@ class ResourceCollection extends Collection
     {
         $collection = new static();
         $collection->setPath($path);
-        $collection->setNamespace(str_replace('/', '\\', $module->getNamespace() . str_replace($module->getPath(), '', $path)));
+        $collection->setNamespace(str_replace('/', '\\', $module->getNamespace().str_replace($module->getPath(), '', $path)));
         $collection->setType($resourceType);
         $collection->setModule($module);
 
-
         $files = file_exists($path) && is_dir($path) ? array_diff(scandir($path), ['..', '.']) : [];
 
-
         foreach ($files as $file) {
-            if (pathinfo($path . '/' . $file)['extension'] === 'php') {
-                $resource = new $resourceType($path . '/' . $file, $module);
+            if (pathinfo($path.'/'.$file)['extension'] === 'php') {
+                $resource = new $resourceType($path.'/'.$file, $module);
                 if ($resource->isValid()) {
                     $collection->add($resource);
                 }
