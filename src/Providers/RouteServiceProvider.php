@@ -27,7 +27,7 @@ class RouteServiceProvider extends ServiceProvider implements Routes
 
         $middleware = $groups[$group]['middleware'] ?? [];
         $domain = $groups[$group]['domain'] ?? null;
-        $prefix = $this->buildPrefix($groups[$group]['prefix'] ?? null, $subPrefix);
+        $prefix = $name . '/' . $this->buildPrefix($groups[$group]['prefix'] ?? null, $subPrefix);
 
         $route = Route::middleware($middleware);
 
@@ -47,7 +47,7 @@ class RouteServiceProvider extends ServiceProvider implements Routes
     protected function buildPrefix(?string $mainPrefix, ?string $subPrefix): ?string
     {
         if (isset($mainPrefix) && isset($subPrefix)) {
-            return $mainPrefix.'/'.$subPrefix;
+            return $mainPrefix . '/' . $subPrefix;
         } elseif (isset($mainPrefix) && !isset($subPrefix)) {
             return $mainPrefix;
         } elseif (!isset($mainPrefix) && isset($subPrefix)) {
