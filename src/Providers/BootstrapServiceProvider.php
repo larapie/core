@@ -6,7 +6,6 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\PackageManifest;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Larapie\Core\Console\SeedCommand;
 use Larapie\Core\Contracts\Bootstrapping;
@@ -134,6 +133,7 @@ class BootstrapServiceProvider extends ServiceProvider
 
                     return;
                 }
+
                 throw new BootstrappingFailedException("Registering Route < $route > failed. No group was provided. Use the following format name.group.prefix");
             });
     }

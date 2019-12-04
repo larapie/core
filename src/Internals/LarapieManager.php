@@ -101,7 +101,7 @@ class LarapieManager
      */
     public function getModulePath(string $module): string
     {
-        return self::getModulesBasePath() . '/' . $module;
+        return self::getModulesBasePath().'/'.$module;
     }
 
     /**
@@ -113,7 +113,7 @@ class LarapieManager
      */
     public function getPackagePath(string $package): string
     {
-        return self::getPackagesBasePath() . '/' . $package;
+        return self::getPackagesBasePath().'/'.$package;
     }
 
     /**
@@ -144,14 +144,15 @@ class LarapieManager
             throw new InvalidRouteGroupException($groupName);
         }
 
-        $scheme = parse_url($this->getAppUrl())['scheme'] . '://';
+        $scheme = parse_url($this->getAppUrl())['scheme'].'://';
         $domain = $groups[$groupName]['domain'] ?? $this->getAppUrl();
         $prefix = $groups[$groupName]['prefix'] ?? null;
 
-        if ($prefix !== null)
-            $domain = $domain . '/' . $prefix;
+        if ($prefix !== null) {
+            $domain = $domain.'/'.$prefix;
+        }
 
-        return $scheme . $domain;
+        return $scheme.$domain;
     }
 
     public function getAppUrl(): string

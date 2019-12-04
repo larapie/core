@@ -85,12 +85,12 @@ class Resource
     public function toArray()
     {
         return [
-            'path'      => $this->getPath(),
-            'directory' => $this->getDirectory(),
-            'name'      => $this->getName(),
-            'filename'  => $this->getFileName(),
-            'module'    => $this->getModule()->getName(),
-            'module_type' => $this->getModule()->getType()
+            'path'        => $this->getPath(),
+            'directory'   => $this->getDirectory(),
+            'name'        => $this->getName(),
+            'filename'    => $this->getFileName(),
+            'module'      => $this->getModule()->getName(),
+            'module_type' => $this->getModule()->getType(),
         ];
     }
 }
