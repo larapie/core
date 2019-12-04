@@ -19,6 +19,7 @@ use Larapie\Core\Internals\Packages;
  * @method static string getPackageBasePath()
  * @method static string getAppUrl()
  * @method static string getApiUrl()
+ * @method static string getGroupUrl(string $groupName)
  *
  * @see \Larapie\Core\Internals\LarapieManager
  */

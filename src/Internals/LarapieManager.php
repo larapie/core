@@ -2,6 +2,8 @@
 
 namespace Larapie\Core\Internals;
 
+use Larapie\Core\Exceptions\InvalidRouteGroupException;
+
 class LarapieManager
 {
     private static $modules;
@@ -99,7 +101,7 @@ class LarapieManager
      */
     public function getModulePath(string $module): string
     {
-        return self::getModulesBasePath().'/'.$module;
+        return self::getModulesBasePath() . '/' . $module;
     }
 
     /**
@@ -111,7 +113,7 @@ class LarapieManager
      */
     public function getPackagePath(string $package): string
     {
-        return self::getPackagesBasePath().'/'.$package;
+        return self::getPackagesBasePath() . '/' . $package;
     }
 
     /**
@@ -134,6 +136,24 @@ class LarapieManager
         return base_path(config('larapie.packages.path'));
     }
 
+    public function getGroupUrl(string $groupName): string
+    {
+        $groups = config('larapie.routing.groups', []);
+
+        if (!array_key_exists($groupName, $groups)) {
+            throw new InvalidRouteGroupException($groupName);
+        }
+
+        $scheme = parse_url($this->getAppUrl())['scheme'] . '://';
+        $domain = $groups[$groupName]['domain'] ?? $this->getAppUrl();
+        $prefix = $groups[$groupName]['prefix'] ?? null;
+
+        if ($prefix !== null)
+            $domain = $domain . '/' . $prefix;
+
+        return $scheme . $domain;
+    }
+
     public function getAppUrl(): string
     {
         return config('app.url');
@@ -141,28 +161,6 @@ class LarapieManager
 
     public function getApiUrl(): string
     {
-        $scheme = null;
-        $apiUri = config('larapie.api_url');
-
-        if ($apiUri !== null) {
-            $scheme = parse_url($apiUri)['scheme'].'://';
-        } else {
-            $scheme = parse_url($appUri = $this->getAppUrl())['scheme'].'://' ?? 'http://';
-        }
-
-        if (($sub = config('larapie.api_subdomain')) !== null) {
-            if ($apiUri === null) {
-                return $scheme.$sub.'.'.parse_url($appUri, PHP_URL_HOST);
-            }
-            $this->getAppUrl();
-
-            return $scheme.$sub.'.'.$apiUri;
-        }
-
-        if ($apiUri === null) {
-            return $this->getAppUrl().'/api';
-        }
-
-        return $scheme.$apiUri;
+        return $this->getGroupUrl('api');
     }
 }

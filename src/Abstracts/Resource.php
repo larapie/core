@@ -67,7 +67,7 @@ class Resource
     /**
      * @return Module
      */
-    public function getModule(): Module
+    public function getModule()
     {
         return $this->module;
     }
@@ -90,6 +90,7 @@ class Resource
             'name'      => $this->getName(),
             'filename'  => $this->getFileName(),
             'module'    => $this->getModule()->getName(),
+            'module_type' => $this->getModule()->getType()
         ];
     }
 }

@@ -14,4 +14,9 @@ class Package extends Module
     {
         return config('larapie.packages.namespace').'\\'.$this->getName();
     }
+
+    public function getType() :string
+    {
+        return 'package';
+    }
 }

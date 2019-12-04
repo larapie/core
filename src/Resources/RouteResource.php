@@ -8,7 +8,7 @@ class RouteResource extends Resource
 {
     public function getControllerNamespace()
     {
-        return $this->getModule()->getNamespace().str_replace('/', '\\', config('larapie.resources.controllers'));
+        return $this->getModule()->getNamespace() . str_replace('/', '\\', config('larapie.resources.controllers'));
     }
 
     protected function extractDataFromName(int $index): ?string
@@ -18,36 +18,37 @@ class RouteResource extends Resource
 
     public function getRoutePrefix()
     {
-        return $this->extractDataFromName(0);
+        return $this->extractDataFromName(2);
     }
 
-    public function getMiddlewareGroup()
+    public function getGroup()
     {
         return $this->extractDataFromName(1);
     }
 
-    public function getRouteVersion()
+    protected function getRouteName()
     {
-        return $this->extractDataFromName(2);
+        return $this->extractDataFromName(0);
     }
 
-    protected function getFullPrefix()
+    protected function getRouteServiceProvider(): ?string
     {
-        $version = $this->getRouteVersion();
-
-        if ($version === null) {
-            return $this->getRoutePrefix();
+        foreach ($this->getModule()->getServiceProviders() as $provider) {
+            if ($provider->hasRoutes())
+                return $provider->getFQN();
         }
-
-        return $version.'/'.$this->getRoutePrefix();
+        return null;
     }
 
     public function toArray()
     {
         return array_merge(parent::toArray(), [
             'controller_namespace' => $this->getControllerNamespace(),
-            'route_prefix'         => $this->getFullPrefix(),
-            'middleware_group'     => $this->getMiddlewareGroup(),
+            'route_name' => $this->getRouteName(),
+            'route_prefix' => $this->getRoutePrefix(),
+            'route_group' => $this->getGroup(),
+            'route_provider' => $this->getRouteServiceProvider()
         ]);
     }
+
 }

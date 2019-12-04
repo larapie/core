@@ -4,60 +4,56 @@ namespace Larapie\Core\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Larapie\Core\Contracts\Routes;
+use Larapie\Core\Exceptions\InvalidRouteGroupException;
 use Larapie\Core\Internals\LarapieManager;
 
-class RouteServiceProvider extends ServiceProvider
+class RouteServiceProvider extends ServiceProvider implements Routes
 {
     /**
-     * Define the "web" routes for the application.
+     * Maps the routes for the application.
      *
-     * These routes all receive session state, CSRF protection, etc.
-     *
-     * This method is part of the bootstrapping and registers the routes for ALL modules and not only for the foundation.
-     *
-     * @return void
-     */
-    public function mapWebRoutes(string $prefix, string $path)
-    {
-        Route::prefix($prefix)
-            ->domain((new LarapieManager())->getAppUrl())
-            ->middleware('web')
-            ->group($path);
-    }
-
-    /**
-     * Define the "api" routes for the application.
-     *
-     * These routes are typically stateless.
-     *
-     * * This method is part of the bootstrapping and registers the routes for ALL modules and not only for the foundation.
+     * This method is part of the bootstrapping process.
+     * It will register the routes for ALL modules & packages.
      *
      * @return void
      */
-    public function mapApiRoutes(string $prefix, string $path, $auth = true)
+
+    public function mapRoutes(string $name, string $group, ?string $subPrefix, string $path, string $controllerNamespace)
     {
-        Route::middleware('api'.($auth ? '' : ':noauth'))
-            ->domain($this->generateApiDomain())
-            ->prefix(config('larapie.api_subdomain') === null ? 'api/'.$prefix : $prefix)
-            ->group($path);
+        $groups = config('larapie.routing.groups', []);
+
+        if (!array_key_exists($group, $groups)) {
+            throw new InvalidRouteGroupException($group);
+        }
+
+        $middleware = $groups[$group]['middleware'] ?? [];
+        $domain = $groups[$group]['domain'] ?? null;
+        $prefix = $this->buildPrefix($groups[$group]['prefix'] ?? null, $subPrefix);
+
+        $route = Route::middleware($middleware);
+
+        if (isset($domain))
+            $route = $route->domain($domain);
+
+        if (isset($prefix))
+            $route = $route->prefix($prefix);
+
+        $route->namespace($controllerNamespace);
+
+        $route->group($path);
     }
 
-    protected function generateApiDomain()
+    protected function buildPrefix(?string $mainPrefix, ?string $subPrefix): ?string
     {
-        $url = config('larapie.api_url');
-
-        if (($sub = config('larapie.api_subdomain')) !== null) {
-            if ($url === null) {
-                return $sub.'.{domain}.{tld}';
-            }
-
-            return $sub.'.'.$url;
+        if (isset($mainPrefix) && isset($subPrefix))
+            return $mainPrefix . '/' . $subPrefix;
+        elseif (isset($mainPrefix) && !isset($subPrefix)) {
+            return $mainPrefix;
+        } elseif (!isset($mainPrefix) && isset($subPrefix)) {
+            return $subPrefix;
         }
 
-        if ($url === null) {
-            return '{domain}.{tld}';
-        }
-
-        return $url;
+        return null;
     }
 }

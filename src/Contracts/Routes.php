@@ -5,9 +5,10 @@ namespace Larapie\Core\Contracts;
 interface Routes
 {
     /**
-     * An array of listeners that need to be registered for the event.
+     * Registers a route file
+     * Implementing this on a Service provider in a module or package will override the base route service provider!
      *
-     * @return string[]
+     * @return void
      */
-    public function routes(string $path);
+    public function mapRoutes(string $name, string $group, ?string $subPrefix, string $path, string $controllerNamespace);
 }

@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Larapie\Core\Console\SeedCommand;
 use Larapie\Core\Contracts\Bootstrapping;
+use Larapie\Core\Contracts\Routes;
+use Larapie\Core\Exceptions\BootstrappingFailedException;
 
 /**
  * Class BootstrapServiceProvider.
@@ -31,7 +33,6 @@ class BootstrapServiceProvider extends ServiceProvider
         $this->registerFactories($service->getFactories());
         $this->registerPolicies($service->getModels());
         $this->registerObservers($service->getModels());
-        $this->registerRoutesByServiceProvider($service->getProviders(), $service->getRoutes());
         $this->registerRoutes($service->getRoutes());
 
         /*
@@ -112,13 +113,13 @@ class BootstrapServiceProvider extends ServiceProvider
             });
     }
 
-    protected function getRouteProviderClass()
+    protected function getRouteProvider(?string $provider): Routes
     {
-        if (class_exists($providerClass = config('larapie.providers.routing'))) {
-            return $providerClass;
+        if ($provider !== null) {
+            return new $provider($this->app);
         }
 
-        return RouteServiceProvider::class;
+        return class_exists($providerClass = config('larapie.routing.provider')) ? new $providerClass($this->app) : new RouteServiceProvider($this->app);
     }
 
     protected function registerRoutes(array $routes)
@@ -128,25 +129,12 @@ class BootstrapServiceProvider extends ServiceProvider
                 return !is_bool($route);
             })
             ->each(function (array $route) {
-                if (($middleware = $route['middleware_group']) !== null) {
-                    $providerClass = $this->getRouteProviderClass();
-                    $provider = new $providerClass($this->app);
-                    $method = 'map'.ucfirst(strtolower($route['middleware_group']).'Routes');
+                if ($route['route_group'] !== null) {
+                    $this->getRouteProvider($route['route_provider'])->mapRoutes($route['route_name'], $route['route_group'], $route['route_prefix'], $route['path'], $route['controller_namespace']);
 
-                    if (method_exists($provider, $method)) {
-                        $provider->$method($route['route_prefix'], $route['path']);
-
-                        return;
-                    }
+                    return;
                 }
-
-                $routes = Route::prefix($route['route_prefix']);
-
-                if ($middleware !== null) {
-                    $routes->middleware($route['middleware_group']);
-                }
-
-                $routes->group($route['path']);
+                throw new BootstrappingFailedException("Registering Route < $route > failed. No group was provided. Use the following format name.group.prefix");
             });
     }
 
@@ -198,27 +186,6 @@ class BootstrapServiceProvider extends ServiceProvider
         collect($providers)
             ->each(function (array $provider) {
                 $this->app->register($provider['fqn']);
-            });
-    }
-
-    protected function registerRoutesByServiceProvider(array $providers, array $routes)
-    {
-        $routes = collect($routes)
-            ->groupBy('module');
-
-        collect($providers)
-            ->filter(function ($provider) {
-                return $provider['routes'];
-            })
-            ->groupBy('module')
-            ->intersectByKeys($routes)
-            ->each(function ($providers, $moduleName) use ($routes) {
-                $routeServiceProvider = $providers->first()['fqn'];
-                $routes
-                    ->get($moduleName)
-                    ->each(function ($route) use ($routeServiceProvider) {
-                        call_class_function($routeServiceProvider, 'routes', $route['path']);
-                    });
             });
     }
 
