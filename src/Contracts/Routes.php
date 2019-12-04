@@ -10,5 +10,5 @@ interface Routes
      *
      * @return void
      */
-    public function mapRoutes(string $name, string $group, ?string $subPrefix, string $path, string $controllerNamespace);
+    public function mapRoutes(string $name, string $group, ?string $subPrefix, string $path);
 }

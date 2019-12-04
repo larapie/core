@@ -17,7 +17,7 @@ class RouteServiceProvider extends ServiceProvider implements Routes
      *
      * @return void
      */
-    public function mapRoutes(string $name, string $group, ?string $subPrefix, string $path, string $controllerNamespace)
+    public function mapRoutes(string $name, string $group, ?string $subPrefix, string $path)
     {
         $groups = config('larapie.routing.groups', []);
 
@@ -38,8 +38,6 @@ class RouteServiceProvider extends ServiceProvider implements Routes
         if (isset($prefix)) {
             $route = $route->prefix($prefix);
         }
-
-        $route->namespace($controllerNamespace);
 
         $route->group($path);
     }
