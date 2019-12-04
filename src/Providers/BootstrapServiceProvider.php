@@ -129,7 +129,7 @@ class BootstrapServiceProvider extends ServiceProvider
             })
             ->each(function (array $route) {
                 if ($route['route_group'] !== null) {
-                    $this->getRouteProvider($route['route_provider'])->mapRoutes($route['route_name'], $route['route_group'], $route['route_prefix'], $route['path'], $route['controller_namespace']);
+                    $this->getRouteProvider($route['route_provider'])->mapRoutes($route['route_name'], $route['route_group'], $route['route_prefix'], $route['path']);
 
                     return;
                 }
