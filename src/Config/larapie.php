@@ -106,7 +106,7 @@ return [
     */
 
     'routing' => [
-        'base_provider' => \Larapie\Core\Providers\RouteServiceProvider::class,
+        'provider' => \Larapie\Core\Providers\RouteServiceProvider::class,
 
         'groups' => [
             'web' => [
