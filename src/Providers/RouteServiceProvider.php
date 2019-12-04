@@ -6,7 +6,6 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Route;
 use Larapie\Core\Contracts\Routes;
 use Larapie\Core\Exceptions\InvalidRouteGroupException;
-use Larapie\Core\Internals\LarapieManager;
 
 class RouteServiceProvider extends ServiceProvider implements Routes
 {
@@ -18,7 +17,6 @@ class RouteServiceProvider extends ServiceProvider implements Routes
      *
      * @return void
      */
-
     public function mapRoutes(string $name, string $group, ?string $subPrefix, string $path, string $controllerNamespace)
     {
         $groups = config('larapie.routing.groups', []);
@@ -33,11 +31,13 @@ class RouteServiceProvider extends ServiceProvider implements Routes
 
         $route = Route::middleware($middleware);
 
-        if (isset($domain))
+        if (isset($domain)) {
             $route = $route->domain($domain);
+        }
 
-        if (isset($prefix))
+        if (isset($prefix)) {
             $route = $route->prefix($prefix);
+        }
 
         $route->namespace($controllerNamespace);
 
@@ -46,9 +46,9 @@ class RouteServiceProvider extends ServiceProvider implements Routes
 
     protected function buildPrefix(?string $mainPrefix, ?string $subPrefix): ?string
     {
-        if (isset($mainPrefix) && isset($subPrefix))
-            return $mainPrefix . '/' . $subPrefix;
-        elseif (isset($mainPrefix) && !isset($subPrefix)) {
+        if (isset($mainPrefix) && isset($subPrefix)) {
+            return $mainPrefix.'/'.$subPrefix;
+        } elseif (isset($mainPrefix) && !isset($subPrefix)) {
             return $mainPrefix;
         } elseif (!isset($mainPrefix) && isset($subPrefix)) {
             return $subPrefix;

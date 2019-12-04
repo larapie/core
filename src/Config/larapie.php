@@ -24,7 +24,7 @@ return [
     */
 
     'modules' => [
-        'path' => env('MODULES_PATH', 'app/Modules'),
+        'path'      => env('MODULES_PATH', 'app/Modules'),
         'namespace' => env('MODULES_NAMESPACE', '\\App\\Modules'),
     ],
 
@@ -38,7 +38,7 @@ return [
     */
 
     'foundation' => [
-        'path' => env('FOUNDATION_PATH', 'app/Foundation'),
+        'path'      => env('FOUNDATION_PATH', 'app/Foundation'),
         'namespace' => env('FOUNDATION_NAMESPACE', '\\App\\Foundation'),
     ],
 
@@ -52,7 +52,7 @@ return [
     */
 
     'packages' => [
-        'path' => env('PACKAGES_PATH', 'app/Packages'),
+        'path'      => env('PACKAGES_PATH', 'app/Packages'),
         'namespace' => env('PACKAGES_NAMESPACE', '\\App\\Packages'),
     ],
 
@@ -66,34 +66,34 @@ return [
     */
 
     'resources' => [
-        'actions' => '/Actions',
-        'attributes' => '/Attributes',
-        'commands' => '/Console',
-        'configs' => '/Config',
-        'controllers' => '/Http/Controllers',
-        'contracts' => '/Contracts',
-        'events' => '/Events',
-        'factories' => '/Database/Factories',
-        'guards' => '/Guards',
-        'jobs' => '/Jobs',
-        'listeners' => '/Listeners',
-        'middleware' => '/Http/Middleware',
-        'migrations' => '/Database/Migrations',
-        'models' => '/Models',
+        'actions'       => '/Actions',
+        'attributes'    => '/Attributes',
+        'commands'      => '/Console',
+        'configs'       => '/Config',
+        'controllers'   => '/Http/Controllers',
+        'contracts'     => '/Contracts',
+        'events'        => '/Events',
+        'factories'     => '/Database/Factories',
+        'guards'        => '/Guards',
+        'jobs'          => '/Jobs',
+        'listeners'     => '/Listeners',
+        'middleware'    => '/Http/Middleware',
+        'migrations'    => '/Database/Migrations',
+        'models'        => '/Models',
         'notifications' => '/Notifications',
-        'observers' => '/Observers',
-        'policies' => '/Policies',
-        'permissions' => '/Permissions',
-        'providers' => '/Providers',
-        'requests' => '/Http/Requests',
-        'rules' => '/Rules',
-        'repositories' => '/Repositories',
-        'routes' => '/Routes',
-        'seeders' => '/Database/Seeders',
-        'services' => '/Services',
-        'transformers' => '/Transformers',
-        'tests' => '/Tests',
-        'resources' => '/Resources',
+        'observers'     => '/Observers',
+        'policies'      => '/Policies',
+        'permissions'   => '/Permissions',
+        'providers'     => '/Providers',
+        'requests'      => '/Http/Requests',
+        'rules'         => '/Rules',
+        'repositories'  => '/Repositories',
+        'routes'        => '/Routes',
+        'seeders'       => '/Database/Seeders',
+        'services'      => '/Services',
+        'transformers'  => '/Transformers',
+        'tests'         => '/Tests',
+        'resources'     => '/Resources',
     ],
 
     /*
@@ -111,19 +111,19 @@ return [
         'groups' => [
             'web' => [
                 'middleware' => ['web'],
-                'domain' => null,
-                'prefix' => null
+                'domain'     => null,
+                'prefix'     => null,
             ],
             'api' => [
                 'middleware' => ['api'],
-                'domain' => null,
-                'prefix' => 'api'
+                'domain'     => null,
+                'prefix'     => 'api',
             ],
             'api-noauth' => [
                 'middleware' => ['api-noauth'],
-                'domain' => null,
-                'prefix' => 'api'
-            ]
-        ]
+                'domain'     => null,
+                'prefix'     => 'api',
+            ],
+        ],
     ],
 ];

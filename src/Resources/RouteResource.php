@@ -8,7 +8,7 @@ class RouteResource extends Resource
 {
     public function getControllerNamespace()
     {
-        return $this->getModule()->getNamespace() . str_replace('/', '\\', config('larapie.resources.controllers'));
+        return $this->getModule()->getNamespace().str_replace('/', '\\', config('larapie.resources.controllers'));
     }
 
     protected function extractDataFromName(int $index): ?string
@@ -34,9 +34,11 @@ class RouteResource extends Resource
     protected function getRouteServiceProvider(): ?string
     {
         foreach ($this->getModule()->getServiceProviders() as $provider) {
-            if ($provider->hasRoutes())
+            if ($provider->hasRoutes()) {
                 return $provider->getFQN();
+            }
         }
+
         return null;
     }
 
@@ -44,11 +46,10 @@ class RouteResource extends Resource
     {
         return array_merge(parent::toArray(), [
             'controller_namespace' => $this->getControllerNamespace(),
-            'route_name' => $this->getRouteName(),
-            'route_prefix' => $this->getRoutePrefix(),
-            'route_group' => $this->getGroup(),
-            'route_provider' => $this->getRouteServiceProvider()
+            'route_name'           => $this->getRouteName(),
+            'route_prefix'         => $this->getRoutePrefix(),
+            'route_group'          => $this->getGroup(),
+            'route_provider'       => $this->getRouteServiceProvider(),
         ]);
     }
-
 }
