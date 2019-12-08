@@ -32,10 +32,7 @@ class RouteServiceProvider extends ServiceProvider implements Routes
         $route = Route::middleware($middleware);
 
         if (isset($domain)) {
-            if (!is_array($domain))
-                $domain = [$domain];
-            foreach ($domain as $aDomain)
-                $route = $route->domain($aDomain);
+            $route = $route->domain($this->buildDomain($domain));
         }
 
         if (isset($prefix)) {
@@ -56,5 +53,21 @@ class RouteServiceProvider extends ServiceProvider implements Routes
         }
 
         return null;
+    }
+
+
+    protected function buildDomain(string $input) :string
+    {
+        // in case scheme relative URI is passed, e.g., //www.google.com/
+        $input = trim($input, '/');
+
+        // If scheme not included, prepend it
+        if (!preg_match('#^http(s)?://#', $input)) {
+            $input = 'http://' . $input;
+        }
+
+        $urlParts = parse_url($input);
+
+        return $urlParts['host'];
     }
 }
