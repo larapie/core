@@ -45,7 +45,7 @@ class RouteServiceProvider extends ServiceProvider implements Routes
     protected function buildPrefix(?string $mainPrefix, ?string $subPrefix): ?string
     {
         if (isset($mainPrefix) && isset($subPrefix)) {
-            return $subPrefix.'/'.$mainPrefix;
+            return $mainPrefix.'/'.$subPrefix;
         } elseif (isset($mainPrefix) && !isset($subPrefix)) {
             return $mainPrefix;
         } elseif (!isset($mainPrefix) && isset($subPrefix)) {
