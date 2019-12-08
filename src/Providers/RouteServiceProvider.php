@@ -27,7 +27,7 @@ class RouteServiceProvider extends ServiceProvider implements Routes
 
         $middleware = $groups[$group]['middleware'] ?? [];
         $domain = $groups[$group]['domain'] ?? null;
-        $prefix = $name . '/' . $this->buildPrefix($groups[$group]['prefix'] ?? null, $subPrefix);
+        $prefix = $this->buildPrefix($groups[$group]['prefix'] ?? null, $subPrefix) . '/' . $name;
 
         $route = Route::middleware($middleware);
 
