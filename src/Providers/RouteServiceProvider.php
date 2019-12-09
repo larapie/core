@@ -27,7 +27,7 @@ class RouteServiceProvider extends ServiceProvider implements Routes
 
         $middleware = $groups[$group]['middleware'] ?? [];
         $domain = $groups[$group]['domain'] ?? null;
-        $prefix = $this->buildPrefix($groups[$group]['prefix'] ?? null, $subPrefix) . '/' . $name;
+        $prefix = $this->buildPrefix($groups[$group]['prefix'] ?? null, $subPrefix).'/'.$name;
 
         $route = Route::middleware($middleware);
 
@@ -45,7 +45,7 @@ class RouteServiceProvider extends ServiceProvider implements Routes
     protected function buildPrefix(?string $mainPrefix, ?string $subPrefix): ?string
     {
         if (isset($mainPrefix) && isset($subPrefix)) {
-            return $mainPrefix . '/' . $subPrefix;
+            return $mainPrefix.'/'.$subPrefix;
         } elseif (isset($mainPrefix) && !isset($subPrefix)) {
             return $mainPrefix;
         } elseif (!isset($mainPrefix) && isset($subPrefix)) {
@@ -55,7 +55,6 @@ class RouteServiceProvider extends ServiceProvider implements Routes
         return null;
     }
 
-
     protected function buildDomain(string $input) :string
     {
         // in case scheme relative URI is passed, e.g., //www.google.com/
@@ -63,7 +62,7 @@ class RouteServiceProvider extends ServiceProvider implements Routes
 
         // If scheme not included, prepend it
         if (!preg_match('#^http(s)?://#', $input)) {
-            $input = 'http://' . $input;
+            $input = 'http://'.$input;
         }
 
         $urlParts = parse_url($input);
