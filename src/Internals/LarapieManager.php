@@ -146,6 +146,19 @@ class LarapieManager
 
         $scheme = parse_url($this->getAppUrl())['scheme'].'://';
         $domain = $groups[$groupName]['domain'] ?? $this->getAppUrl();
+
+        // in case scheme relative URI is passed, e.g., //www.google.com/
+        $domain = trim($domain, '/');
+
+        // If scheme not included, prepend it
+        if (!preg_match('#^http(s)?://#', $domain)) {
+            $domain = 'http://' . $domain;
+        }
+
+        $urlParts = parse_url($domain);
+
+        $domain= $urlParts['host'];
+
         $prefix = $groups[$groupName]['prefix'] ?? null;
 
         if ($prefix !== null) {
