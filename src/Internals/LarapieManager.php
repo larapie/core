@@ -152,12 +152,12 @@ class LarapieManager
 
         // If scheme not included, prepend it
         if (!preg_match('#^http(s)?://#', $domain)) {
-            $domain = 'http://' . $domain;
+            $domain = 'http://'.$domain;
         }
 
         $urlParts = parse_url($domain);
 
-        $domain= $urlParts['host'];
+        $domain = $urlParts['host'];
 
         $prefix = $groups[$groupName]['prefix'] ?? null;
 
