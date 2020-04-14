@@ -41,8 +41,7 @@ class FQNResolver
                 $class = collect(get_declared_classes())
                     ->diff($previouslyLoadedClasses)
                     ->first();
-            }
-            else {
+            } else {
                 $class = collect(get_declared_classes())
                     ->diff($previouslyLoadedClasses)
                     ->last();
