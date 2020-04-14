@@ -2,8 +2,8 @@
 
 namespace Larapie\Core\Responses;
 
-use Illuminate\Foundation\Testing\Assert as PHPUnit;
-use Illuminate\Foundation\Testing\TestResponse as ParentTestResponse;
+use Illuminate\Testing\Assert as PHPUnit;
+use Illuminate\Testing\TestResponse as ParentTestResponse;
 
 class TestResponse extends ParentTestResponse
 {
