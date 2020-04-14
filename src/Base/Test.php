@@ -10,7 +10,10 @@ use Larapie\Core\Traits\CreatesApplication;
 
 abstract class Test extends TestCase
 {
-    use ArraySubsetAsserts, ArrayHasKeysAssert, CreatesApplication, ActAsUser;
+    use ArraySubsetAsserts;
+    use ArrayHasKeysAssert;
+    use CreatesApplication;
+    use ActAsUser;
 
     public function setUp(): void
     {

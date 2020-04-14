@@ -199,7 +199,9 @@ class BootstrapServiceProvider extends ServiceProvider
     public function overridePackageManifest(\Illuminate\Contracts\Foundation\Application $app)
     {
         $app->instance(PackageManifest::class, new \Larapie\Core\Support\Manifest\PackageManifest(
-            new Filesystem(), $app->basePath(), $app->getCachedPackagesPath()
+            new Filesystem(),
+            $app->basePath(),
+            $app->getCachedPackagesPath()
         ));
     }
 }

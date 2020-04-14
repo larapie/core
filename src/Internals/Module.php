@@ -73,7 +73,7 @@ class Module
         return $this->path;
     }
 
-    public function getType() :string
+    public function getType(): string
     {
         return 'module';
     }

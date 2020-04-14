@@ -55,7 +55,7 @@ class RouteServiceProvider extends ServiceProvider implements Routes
         return null;
     }
 
-    protected function buildDomain(string $input) :string
+    protected function buildDomain(string $input): string
     {
         // in case scheme relative URI is passed, e.g., //www.google.com/
         $input = trim($input, '/');
