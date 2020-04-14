@@ -28,6 +28,7 @@ class FQNResolver
         }
         $class = null;
         $classes = self::getClasses();
+        $previouslyLoadedClasses = get_declared_classes();
         $alreadyLoaded = include_once $filePath;
 
         //SECOND DETECTION METHOD. HAPPENS WHEN CLASS IS ALREADY INCLUDED
@@ -35,9 +36,17 @@ class FQNResolver
             $class = self::resolveFromDeclaredClasses($filePath);
         } //PREFERRED & MOST RELIABLE DETECTION METHOD
         else {
-            $class = collect(get_declared_classes())
-                ->diff($classes)
-                ->last();
+            //FROM PHP 7.4 ONWARDS IT LOADS THE PARENTCLASSES LAST SO CHECK
+            if (version_compare(PHP_VERSION, '7.4.0') >= 0) {
+                $class = collect(get_declared_classes())
+                    ->diff($previouslyLoadedClasses)
+                    ->first();
+            }
+            else {
+                $class = collect(get_declared_classes())
+                    ->diff($previouslyLoadedClasses)
+                    ->last();
+            }
         }
 
         //THIRD DETECTION METHOD. HAPPENS WHEN CLASS NAME IS DIFFERENT FROM FILENAME. (UNLIKELY)
