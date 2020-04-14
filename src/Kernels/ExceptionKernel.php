@@ -12,7 +12,7 @@ class ExceptionKernel extends ExceptionHandler
      * Render an exception into an HTTP response.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Throwable $exception $exception
+     * @param \Throwable               $exception $exception
      *
      * @return \Illuminate\Http\Response
      */
