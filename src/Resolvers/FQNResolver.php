@@ -95,7 +95,7 @@ class FQNResolver
                 collect($exploded = explode('\\', strtolower($currentClass)))
                     ->slice(0, -1)
                     ->reverse()
-                    ->each(function ($partOfNamespace) use ($filePath, $fileName, &$matches, $currentClass, &$class, &$currentMatches) {
+                    ->each(function ($partOfNamespace) use ($filePath, &$matches, $currentClass, &$class, &$currentMatches) {
                         $explodedpath = explode('/', $filePath);
                         if (!array_key_exists($key = (count($explodedpath) - 2 - $currentMatches), $explodedpath)) {
                             $currentMatches = 0;
