@@ -4,7 +4,7 @@ namespace Larapie\Core\Abstracts;
 
 use Larapie\Core\Internals\Module;
 
-class Resource
+abstract class Resource
 {
     /**
      * @var string
