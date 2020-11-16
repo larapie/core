@@ -25,4 +25,9 @@ class ProviderResource extends ClassResource
             'routes'   => $this->hasRoutes(),
         ]);
     }
+
+    public static function configPath(): string
+    {
+        return config('larapie.resources.providers');
+    }
 }

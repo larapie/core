@@ -52,4 +52,9 @@ class RouteResource extends Resource
             'route_provider'       => $this->getRouteServiceProvider(),
         ]);
     }
+
+    public static function configPath(): string
+    {
+        return config('larapie.resources.requests');
+    }
 }
