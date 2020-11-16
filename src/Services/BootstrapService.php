@@ -10,7 +10,7 @@ namespace Larapie\Core\Services;
 
 use Illuminate\Support\Collection;
 use Larapie\Core\Cache\BootstrapCache;
-use Larapie\Core\Collections\ResourceCollection;
+use Larapie\Core\Collections\ModuleResourceCollection;
 use Larapie\Core\Contracts\Bootstrapping;
 use Larapie\Core\Support\Facades\Larapie;
 
@@ -78,7 +78,7 @@ class BootstrapService implements Bootstrapping
         return $bootstrap->toArray();
     }
 
-    protected function mergeResourceWithBootstrap(&$bootstrap, string $resourceType, ResourceCollection $resourceCollection)
+    protected function mergeResourceWithBootstrap(&$bootstrap, string $resourceType, ModuleResourceCollection $resourceCollection)
     {
         $bootstrap->put($resourceType, array_merge($bootstrap->get($resourceType) ?? [], $resourceCollection->toArray()));
     }

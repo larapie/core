@@ -48,4 +48,9 @@ class EventResource extends ClassResource
     {
         return array_merge(parent::toArray(), ['listeners' => $this->getListeners()]);
     }
+
+    public static function configPath(): string
+    {
+        return config('larapie.resources.events');
+    }
 }

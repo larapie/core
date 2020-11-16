@@ -74,4 +74,9 @@ class ModelResource extends ClassResource
             'observers' => $this->getObservers(),
         ]);
     }
+
+    public static function configPath(): string
+    {
+        return config('larapie.resources.models');
+    }
 }

@@ -8,7 +8,7 @@ use Larapie\Core\Abstracts\ClassResource;
 use Larapie\Core\Abstracts\Resource;
 use Larapie\Core\Internals\Module;
 
-class ResourceCollection extends Collection
+class ModuleResourceCollection extends Collection
 {
     /**
      * @var string
@@ -82,6 +82,7 @@ class ResourceCollection extends Collection
     {
         $this->module = $module;
     }
+
 
     public static function fromPath(string $path, Module $module, string $resourceType)
     {

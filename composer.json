@@ -10,19 +10,20 @@
         }
     ],
     "require": {
-        "php": "^7.2",
+        "php": ">=7.4",
         "ext-json": "*",
         "laravel/framework": ">=7.0"
     },
     "require-dev": {
-        "orchestra/testbench": "~3.8|~4.0|^5.0|^6.0",
-        "phpunit/phpunit": "^8.3|^9.0",
-        "dms/phpunit-arraysubset-asserts": "^0.1.0",
-        "symfony/stopwatch": "^4.3|^5.0"
+        "orchestra/testbench": ">=5.0",
+        "phpunit/phpunit": ">=9.0",
+        "dms/phpunit-arraysubset-asserts": ">=v0.1.0",
+        "symfony/stopwatch": ">=5.0"
     },
     "autoload": {
         "psr-4": {
-            "Larapie\\Core\\": "src/"
+            "Larapie\\Core\\": "src/",
+            "App\\": "tests/app"
         },
         "files": [
             "src/Support/Helpers/helpers.php"

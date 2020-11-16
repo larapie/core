@@ -9,7 +9,7 @@ use Larapie\Core\Resolvers\FQNResolver;
 use Larapie\Core\Support\Facades\Larapie;
 use Orchestra\Testbench\TestCase;
 
-class CoreTests extends TestCase
+class CoreTest extends TestCase
 {
     public function setUp(): void
     {
