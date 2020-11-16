@@ -11,4 +11,3 @@ class ControllerResource extends ClassResource
         return config('larapie.resources.controllers');
     }
 }
-

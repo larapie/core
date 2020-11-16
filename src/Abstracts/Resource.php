@@ -38,7 +38,7 @@ abstract class Resource
      */
     public function getName(): string
     {
-        return basename($this->path, '.' . $this->getExtension());
+        return basename($this->path, '.'.$this->getExtension());
     }
 
     public function getExtension(): string
@@ -85,14 +85,14 @@ abstract class Resource
     public function toArray()
     {
         return [
-            'path' => $this->getPath(),
-            'directory' => $this->getDirectory(),
-            'name' => $this->getName(),
-            'filename' => $this->getFileName(),
-            'module' => $this->getModule()->getName(),
-            'module_type' => $this->getModule()->getType()
+            'path'        => $this->getPath(),
+            'directory'   => $this->getDirectory(),
+            'name'        => $this->getName(),
+            'filename'    => $this->getFileName(),
+            'module'      => $this->getModule()->getName(),
+            'module_type' => $this->getModule()->getType(),
         ];
     }
 
-    public static abstract function configPath(): string;
+    abstract public static function configPath(): string;
 }
