@@ -81,21 +81,22 @@ class Module
 
     public function getComposerFilePath()
     {
-        return $this->getPath() . '/composer.json';
+        return $this->getPath().'/composer.json';
     }
 
     public function getNamespace(): string
     {
-        return config('larapie.modules.namespace') . '\\' . $this->getName();
+        return config('larapie.modules.namespace').'\\'.$this->getName();
     }
 
     /**
-     * @param string|Resource $type Resource classname
+     * @param string|resource $type Resource classname
+     *
      * @return ModuleResourceCollection
      */
     public function createResourceCollection(string $type)
     {
-        return ModuleResourceCollection::fromPath($this->getPath() . $type::configPath(), $this, $type);
+        return ModuleResourceCollection::fromPath($this->getPath().$type::configPath(), $this, $type);
     }
 
     /**

@@ -83,7 +83,6 @@ class ModuleResourceCollection extends Collection
         $this->module = $module;
     }
 
-
     public static function fromPath(string $path, Module $module, string $resourceType)
     {
         $collection = new static();

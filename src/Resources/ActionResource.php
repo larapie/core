@@ -10,5 +10,4 @@ class ActionResource extends ClassResource
     {
         return config('larapie.resources.actions');
     }
-
 }
