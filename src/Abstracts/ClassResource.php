@@ -37,7 +37,15 @@ abstract class ClassResource extends Resource
 
     public function isValid()
     {
-        return parent::isValid() && $this->getClassName() !== null && $this->getClassName() !== '';
+        return parent::isValid() &&
+            $this->getClassName() !== null &&
+            $this->getClassName() !== '' &&
+            ($this->baseClass() === null || is_subclass_of($this->getFQN(), $this->baseClass()));
+    }
+
+    protected function baseClass(): ?string
+    {
+        return null;
     }
 
     public function getFQN()
@@ -49,9 +57,9 @@ abstract class ClassResource extends Resource
     {
         $resource = parent::toArray();
         $class = [
-            'class'     => $this->getClassName(),
+            'class' => $this->getClassName(),
             'namespace' => $this->getNamespace(),
-            'fqn'       => $this->getFQN(),
+            'fqn' => $this->getFQN(),
         ];
 
         return array_merge($resource, $class);

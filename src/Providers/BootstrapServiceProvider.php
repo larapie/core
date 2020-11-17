@@ -11,6 +11,7 @@ use Larapie\Core\Console\SeedCommand;
 use Larapie\Core\Contracts\Bootstrapping;
 use Larapie\Core\Contracts\Routes;
 use Larapie\Core\Exceptions\BootstrappingFailedException;
+use Larapie\Core\Services\FactoryService;
 
 /**
  * Class BootstrapServiceProvider.
@@ -162,10 +163,7 @@ class BootstrapServiceProvider extends ServiceProvider
     {
         collect($factories)
             ->each(function (array $factory) {
-                //REGISTER FACTORIES HERE
-/*                tap(app(\Illuminate\Database\Eloquent\Factory::class), function ($eloquentFactory) use ($factory) {
-                    $eloquentFactory->load($factory['directory']);
-                });*/
+                FactoryService::add($factory['model'], $factory['fqn']);
             });
     }
 
