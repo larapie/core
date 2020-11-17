@@ -22,7 +22,7 @@ class ProviderResource extends ClassResource
     {
         return array_merge(parent::toArray(), [
             'schedule' => $this->hasSchedule(),
-            'routes'   => $this->hasRoutes()
+            'routes'   => $this->hasRoutes(),
         ]);
     }
 

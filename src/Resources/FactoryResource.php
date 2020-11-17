@@ -19,11 +19,13 @@ class FactoryResource extends ClassResource
     {
         $model = null;
 
-        if (property_exists($this->getFQN(), 'model'))
+        if (property_exists($this->getFQN(), 'model')) {
             $model = instance_without_constructor($this->getFQN())->model;
+        }
 
-        if (is_string($model) && class_exists($model))
-            throw new \RuntimeException("Factory needs to have a valid model declared as property");
+        if (is_string($model) && class_exists($model)) {
+            throw new \RuntimeException('Factory needs to have a valid model declared as property');
+        }
 
         return $model;
     }

@@ -1,11 +1,9 @@
 <?php
 
-
 namespace App\Foundation\Traits;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Larapie\Core\Services\FactoryService;
-use Larapie\Core\Support\Facades\Larapie;
 
 trait HasFactory
 {
@@ -13,6 +11,7 @@ trait HasFactory
      * Get a new factory instance for the model.
      *
      * @param mixed $parameters
+     *
      * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
     public static function factory(...$parameters)

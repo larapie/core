@@ -57,9 +57,9 @@ abstract class ClassResource extends Resource
     {
         $resource = parent::toArray();
         $class = [
-            'class' => $this->getClassName(),
+            'class'     => $this->getClassName(),
             'namespace' => $this->getNamespace(),
-            'fqn' => $this->getFQN(),
+            'fqn'       => $this->getFQN(),
         ];
 
         return array_merge($resource, $class);
