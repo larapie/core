@@ -2,9 +2,9 @@
 
 namespace Larapie\Core\Resources;
 
-use Larapie\Core\Abstracts\ClassResource;
+use Larapie\Core\Abstracts\Resource;
 
-class MigrationResource extends ClassResource
+class MigrationResource extends Resource
 {
     public static function configPath(): string
     {

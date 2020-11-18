@@ -15,10 +15,12 @@ use Larapie\Core\Support\Facades\Larapie;
 class FQNResolver
 {
     protected static $resolved = [];
-    protected static $classes;
+    protected static $classes = [];
+    protected static $appClasses = [];
 
     public static function resolve(string $filePath)
     {
+        //FIRST DETECTION METHOD. HAPPENS WHEN A CLASS HAS ALREADY BEEN RESOLVED
         if (array_key_exists($filePath, self::$resolved)) {
             return self::$resolved[$filePath];
         }
@@ -26,9 +28,9 @@ class FQNResolver
         if (!file_exists($filePath)) {
             throw new FileNotFoundException();
         }
+
         $class = null;
-        $classes = self::getClasses();
-        $previouslyLoadedClasses = get_declared_classes();
+
         $alreadyLoaded = include_once $filePath;
 
         //SECOND DETECTION METHOD. HAPPENS WHEN CLASS IS ALREADY INCLUDED
@@ -36,16 +38,12 @@ class FQNResolver
             $class = self::resolveFromDeclaredClasses($filePath);
         } //PREFERRED & MOST RELIABLE DETECTION METHOD
         else {
-            //FROM PHP 7.4 ONWARDS IT LOADS THE PARENTCLASSES LAST SO CHECK
-            if (version_compare(PHP_VERSION, '7.4.0') >= 0) {
-                $class = collect(get_declared_classes())
+            $previouslyLoadedClasses = static::$appClasses;
+            $newClasses = self::getClasses();
+            $class = self::resolveFromDeclaredClasses($filePath,
+                collect($newClasses)
                     ->diff($previouslyLoadedClasses)
-                    ->first();
-            } else {
-                $class = collect(get_declared_classes())
-                    ->diff($previouslyLoadedClasses)
-                    ->last();
-            }
+                    ->toArray());
         }
 
         //THIRD DETECTION METHOD. HAPPENS WHEN CLASS NAME IS DIFFERENT FROM FILENAME. (UNLIKELY)
@@ -55,8 +53,8 @@ class FQNResolver
         }
 
         //This shouldn't happen!
-        if ($class === null) {
-            throw new \RuntimeException('Could not extract fully qualified namespace from filepath. Please make an issue if you encounter this issue at https://github.com/larapie/core');
+        if ($class === null || !class_exists($class)) {
+            throw new \RuntimeException("Error with file $filePath Could not extract fully qualified namespace from filepath. Please make an issue if you encounter this issue at https://github.com/larapie/core");
         }
 
         if (Str::startsWith($class, '\\')) {
@@ -70,55 +68,61 @@ class FQNResolver
 
     protected static function getClasses()
     {
-        if (!isset(self::$classes)) {
-            self::$classes = collect(get_declared_classes())
-                ->filter(function ($class) {
-                    return Str::startsWith($class, Larapie::getFoundation()->getNamespace()) ||
-                        Str::startsWith($class, Larapie::getModules()->getNamespace()) ||
-                        Str::startsWith($class, Larapie::getPackages()->getNamespace());
-                });
+        if (($totalSize = count($currentClasses = get_declared_classes())) > ($previousSize = count(static::$classes ?? []))) {
+            for ($i = $previousSize; $i < $totalSize; $i++) {
+                $class = $currentClasses[$i];
+                if (Str::startsWith($class, Larapie::getFoundation()->getNamespace()) ||
+                    Str::startsWith($class, Larapie::getModules()->getNamespace()) ||
+                    Str::startsWith($class, Larapie::getPackages()->getNamespace())) {
+                    static::$appClasses[] = $class;
+                }
+            }
+            static::$classes = $currentClasses;
+            return static::$appClasses;
         }
 
-        return self::$classes;
+        return static::$appClasses;
     }
 
-    protected static function resolveFromDeclaredClasses(string $filePath): ?string
+    protected static function resolveFromDeclaredClasses(string $filePath, ?array $classes = null): ?string
     {
         $filePath = strtolower($filePath);
         $pathinfo = pathinfo($filePath);
         $class = null;
-        self::getClasses()->each(function (string $currentClass) use ($pathinfo, $filePath, &$class) {
-            if (Str::endsWith(strtolower($currentClass), $fileName = $pathinfo['filename'])) {
-                $matches = 0;
-                $class = null;
-                $currentMatches = 0;
-                collect($exploded = explode('\\', strtolower($currentClass)))
-                    ->slice(0, -1)
-                    ->reverse()
-                    ->each(function ($partOfNamespace) use ($filePath, &$matches, $currentClass, &$class, &$currentMatches) {
-                        $explodedpath = explode('/', $filePath);
-                        if (!array_key_exists($key = (count($explodedpath) - 2 - $currentMatches), $explodedpath)) {
-                            $currentMatches = 0;
+        $classes = $classes ?? static::getClasses();
+        collect($classes)
+            ->each(function (string $currentClass) use ($pathinfo, $filePath, &$class) {
+                if (Str::endsWith(strtolower($currentClass), $fileName = $pathinfo['filename'])) {
+                    $matches = 0;
+                    $class = null;
+                    $currentMatches = 0;
+                    collect($exploded = explode('\\', strtolower($currentClass)))
+                        ->slice(0, -1)
+                        ->reverse()
+                        ->each(function ($partOfNamespace) use ($filePath, &$matches, $currentClass, &$class, &$currentMatches) {
+                            $explodedpath = explode('/', $filePath);
+                            if (!array_key_exists($key = (count($explodedpath) - 2 - $currentMatches), $explodedpath)) {
+                                $currentMatches = 0;
+
+                                return false;
+                            }
+                            $currentPathComparison = $explodedpath[count($explodedpath) - 2 - $currentMatches];
+                            if (Str::is($currentPathComparison, $partOfNamespace)) {
+                                $currentMatches++;
+                                if ($currentMatches > $matches) {
+                                    $class = $currentClass;
+                                    $matches = $currentMatches;
+
+                                    return;
+                                }
+                            } else {
+                                $currentMatches = 0;
+                            }
 
                             return false;
-                        }
-                        $currentPathComparison = $explodedpath[count($explodedpath) - 2 - $currentMatches];
-                        if (Str::is($currentPathComparison, $partOfNamespace)) {
-                            $currentMatches++;
-                            if ($currentMatches > $matches) {
-                                $class = $currentClass;
-                                $matches = $currentMatches;
-
-                                return;
-                            }
-                        } else {
-                            $currentMatches = 0;
-                        }
-
-                        return false;
-                    });
-            }
-        });
+                        });
+                }
+            });
 
         return $class;
     }
@@ -144,7 +148,7 @@ class FQNResolver
                 if ($tokens[$i][0] === T_NAMESPACE) {
                     for ($j = $i + 1; $j < count($tokens); $j++) {
                         if ($tokens[$j][0] === T_STRING) {
-                            $namespace .= '\\'.$tokens[$j][1];
+                            $namespace .= '\\' . $tokens[$j][1];
                         } elseif ($tokens[$j] === '{' || $tokens[$j] === ';') {
                             break;
                         }
@@ -161,6 +165,6 @@ class FQNResolver
             }
         }
 
-        return $namespace.'\\'.$class;
+        return $namespace . '\\' . $class;
     }
 }
