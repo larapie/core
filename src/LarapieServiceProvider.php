@@ -48,7 +48,6 @@ class LarapieServiceProvider extends ServiceProvider
 
         $this->registerBootstrapService();
         $this->registerBootstrapServiceProvider();
-
     }
 
     public function registerLarapieAlias()
