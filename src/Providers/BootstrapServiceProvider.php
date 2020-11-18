@@ -12,6 +12,7 @@ use Larapie\Core\Contracts\Bootstrapping;
 use Larapie\Core\Contracts\Routes;
 use Larapie\Core\Exceptions\BootstrappingFailedException;
 use Larapie\Core\Services\FactoryService;
+use Larapie\Core\Support\Facades\ModelFactory;
 
 /**
  * Class BootstrapServiceProvider.
@@ -163,7 +164,7 @@ class BootstrapServiceProvider extends ServiceProvider
     {
         collect($factories)
             ->each(function (array $factory) {
-                FactoryService::add($factory['model'], $factory['fqn']);
+                ModelFactory::add($factory['model'], $factory['fqn']);
             });
     }
 

@@ -12,6 +12,7 @@ use Larapie\Core\Internals\LarapieManager;
 use Larapie\Core\Providers\BootstrapServiceProvider;
 use Larapie\Core\Services\BootstrapService;
 use Larapie\Core\Support\Facades\Larapie;
+use Larapie\Core\Support\Facades\ModelFactory;
 
 class LarapieServiceProvider extends ServiceProvider
 {
@@ -54,6 +55,12 @@ class LarapieServiceProvider extends ServiceProvider
         });
 
         $this->app->alias('larapie', Larapie::class);
+
+        app()->singleton('modelfactoy', function () {
+            return new ModelFactory();
+        });
+
+        $this->app->alias('modelfactory', ModelFactory::class);
     }
 
     protected function registerConfig()

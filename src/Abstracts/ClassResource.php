@@ -7,6 +7,10 @@ use Larapie\Core\Resolvers\FQNResolver;
 
 abstract class ClassResource extends Resource
 {
+
+    /**
+     * @var
+     */
     protected $fqn;
 
     protected function boot()

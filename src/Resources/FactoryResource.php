@@ -12,7 +12,7 @@ class FactoryResource extends ClassResource
     protected function boot()
     {
         parent::boot();
-        $this->extractModel();
+        $this->model = $this->extractModel();
     }
 
     protected function extractModel(): string
@@ -20,14 +20,14 @@ class FactoryResource extends ClassResource
         $model = null;
 
         if (property_exists($this->getFQN(), 'model')) {
-            $model = instance_without_constructor($this->getFQN())->model;
+            $model = instance_without_constructor($this->getFQN())->modelName();
         }
 
         if (is_string($model) && class_exists($model)) {
-            throw new \RuntimeException('Factory needs to have a valid model declared as property');
+            return $model;
         }
 
-        return $model;
+        throw new \RuntimeException('Factory needs to have a valid model declared as property');
     }
 
     /**

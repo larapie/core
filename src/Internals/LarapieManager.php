@@ -6,8 +6,9 @@ use Larapie\Core\Exceptions\InvalidRouteGroupException;
 
 class LarapieManager
 {
-    private static $modules;
-    private static $packages;
+    protected static $modules;
+    protected static $packages;
+    protected static $factory;
 
     /**
      * @return Module[] | Modules

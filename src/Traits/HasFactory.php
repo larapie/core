@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Foundation\Traits;
+namespace Larapie\Core\Traits;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Larapie\Core\Services\FactoryService;
+use Larapie\Core\Support\Facades\ModelFactory;
 
 trait HasFactory
 {
@@ -16,7 +16,7 @@ trait HasFactory
      */
     public static function factory(...$parameters)
     {
-        $factory = static::newFactory() ?: FactoryService::get(static::class)::new();
+        $factory = static::newFactory() ?: ModelFactory::get(static::class)::new();
 
         return $factory
             ->count(is_numeric($parameters[0] ?? null) ? $parameters[0] : null)
