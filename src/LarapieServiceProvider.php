@@ -41,11 +41,13 @@ class LarapieServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerLarapieAlias();
+        $this->registerModelFactory();
         $this->registerConfig();
         $this->registerCommands();
 
         $this->registerBootstrapService();
         $this->registerBootstrapServiceProvider();
+
     }
 
     public function registerLarapieAlias()
@@ -55,7 +57,10 @@ class LarapieServiceProvider extends ServiceProvider
         });
 
         $this->app->alias('larapie', Larapie::class);
+    }
 
+    public function registerModelFactory()
+    {
         app()->singleton('modelfactory', function () {
             return new ModelFactory();
         });
