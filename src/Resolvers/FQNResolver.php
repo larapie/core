@@ -40,10 +40,12 @@ class FQNResolver
         else {
             $previouslyLoadedClasses = static::$appClasses;
             $newClasses = self::getClasses();
-            $class = self::resolveFromDeclaredClasses($filePath,
+            $class = self::resolveFromDeclaredClasses(
+                $filePath,
                 collect($newClasses)
                     ->diff($previouslyLoadedClasses)
-                    ->toArray());
+                    ->toArray()
+            );
         }
 
         //THIRD DETECTION METHOD. HAPPENS WHEN CLASS NAME IS DIFFERENT FROM FILENAME. (UNLIKELY)
@@ -78,6 +80,7 @@ class FQNResolver
                 }
             }
             static::$classes = $currentClasses;
+
             return static::$appClasses;
         }
 
@@ -148,7 +151,7 @@ class FQNResolver
                 if ($tokens[$i][0] === T_NAMESPACE) {
                     for ($j = $i + 1; $j < count($tokens); $j++) {
                         if ($tokens[$j][0] === T_STRING) {
-                            $namespace .= '\\' . $tokens[$j][1];
+                            $namespace .= '\\'.$tokens[$j][1];
                         } elseif ($tokens[$j] === '{' || $tokens[$j] === ';') {
                             break;
                         }
@@ -165,6 +168,6 @@ class FQNResolver
             }
         }
 
-        return $namespace . '\\' . $class;
+        return $namespace.'\\'.$class;
     }
 }

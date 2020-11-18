@@ -66,7 +66,6 @@ class LarapieServiceProvider extends ServiceProvider
         });
 
         $this->app->alias('modelfactory', ModelFactory::class);
-
     }
 
     protected function registerConfig()
