@@ -61,11 +61,10 @@ class LarapieServiceProvider extends ServiceProvider
 
     public function registerModelFactory()
     {
-        app()->singleton('modelfactory', function () {
+        app()->singleton(ModelFactory::class, function () {
             return new ModelFactory();
         });
 
-        $this->app->alias('modelfactory', ModelFactory::class);
     }
 
     protected function registerConfig()
