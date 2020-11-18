@@ -2,7 +2,6 @@
 
 namespace Larapie\Core\Traits;
 
-use Larapie\Core\Services\FactoryService;
 use Larapie\Core\Support\Facades\ModelFactory;
 
 trait HasFactory

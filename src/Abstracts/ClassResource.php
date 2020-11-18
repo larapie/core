@@ -7,7 +7,6 @@ use Larapie\Core\Resolvers\FQNResolver;
 
 abstract class ClassResource extends Resource
 {
-
     /**
      * @var
      */

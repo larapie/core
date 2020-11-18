@@ -11,7 +11,6 @@ use Larapie\Core\Console\SeedCommand;
 use Larapie\Core\Contracts\Bootstrapping;
 use Larapie\Core\Contracts\Routes;
 use Larapie\Core\Exceptions\BootstrappingFailedException;
-use Larapie\Core\Services\FactoryService;
 use Larapie\Core\Support\Facades\ModelFactory;
 
 /**
