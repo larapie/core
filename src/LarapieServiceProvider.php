@@ -11,6 +11,7 @@ use Larapie\Core\Contracts\Bootstrapping;
 use Larapie\Core\Internals\LarapieManager;
 use Larapie\Core\Providers\BootstrapServiceProvider;
 use Larapie\Core\Services\BootstrapService;
+use Larapie\Core\Services\FactoryService;
 use Larapie\Core\Support\Facades\Larapie;
 use Larapie\Core\Support\Facades\ModelFactory;
 
@@ -62,7 +63,7 @@ class LarapieServiceProvider extends ServiceProvider
     public function registerModelFactory()
     {
         app()->singleton(ModelFactory::class, function () {
-            return new ModelFactory();
+            return new FactoryService();
         });
 
     }
