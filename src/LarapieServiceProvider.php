@@ -56,7 +56,7 @@ class LarapieServiceProvider extends ServiceProvider
 
         $this->app->alias('larapie', Larapie::class);
 
-        app()->singleton('modelfactoy', function () {
+        app()->singleton('modelfactory', function () {
             return new ModelFactory();
         });
 
