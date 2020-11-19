@@ -55,6 +55,6 @@ class RouteResource extends Resource
 
     public static function configPath(): string
     {
-        return config('larapie.resources.requests');
+        return config('larapie.resources.routes');
     }
 }
