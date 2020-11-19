@@ -83,7 +83,8 @@ class CoreTest extends TestCase
         $this->assertEquals(Controller::class, $class);
     }
 
-    public function testResources(){
+    public function testResources()
+    {
         $this->assertEquals(ActionResource::configPath(), '/Actions');
         $this->assertEquals(AttributeResource::configPath(), '/Attributes');
         $this->assertEquals(CommandResource::configPath(), '/Console');
@@ -109,6 +110,5 @@ class CoreTest extends TestCase
         $this->assertEquals(ServiceResource::configPath(), '/Services');
         $this->assertEquals(TestResource::configPath(), '/Tests');
         $this->assertEquals(TransformerResource::configPath(), '/Transformers');
-
     }
 }

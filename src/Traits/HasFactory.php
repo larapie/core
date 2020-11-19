@@ -2,7 +2,6 @@
 
 namespace Larapie\Core\Traits;
 
-use Larapie\Core\Resources\ActionResource;
 use Larapie\Core\Support\Facades\ModelFactory;
 
 trait HasFactory
@@ -30,6 +29,5 @@ trait HasFactory
      */
     protected static function newFactory()
     {
-
     }
 }
