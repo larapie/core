@@ -13,15 +13,15 @@ class RouteServiceProvider extends ServiceProvider implements Routes
 {
     use BootstrapService;
 
-    public function register()
+    public function boot()
     {
         if (!$this->routesAreCached()) {
-            $this->registerAppRoutes();
+            $this->appRoutes();
         }
-        parent::register();
+        parent::boot();
     }
 
-    protected function registerAppRoutes()
+    protected function appRoutes()
     {
         collect($this->bootstrapService()->getRoutes())
             ->filter(fn ($route) => !is_bool($route))
