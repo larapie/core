@@ -15,8 +15,8 @@ class RouteServiceProvider extends ServiceProvider implements Routes
 
     public function register()
     {
-        if(!$this->routesAreCached()){
-           $this->registerAppRoutes($this->bootstrapService()->getRoutes());
+        if (!$this->routesAreCached()) {
+            $this->registerAppRoutes($this->bootstrapService()->getRoutes());
         }
         parent::register();
     }
@@ -24,16 +24,17 @@ class RouteServiceProvider extends ServiceProvider implements Routes
     protected function registerAppRoutes(array $routes)
     {
         collect($routes)
-            ->filter(fn($route) => !is_bool($route))
+            ->filter(fn ($route) => !is_bool($route))
             ->each(function (array $route) {
                 if ($route['route_group'] !== null) {
                     $this->mapRoutes($route['route_name'], $route['route_group'], $route['route_prefix'], $route['path']);
+
                     return;
                 }
+
                 throw new BootstrappingFailedException("Registering Route < $route > failed. No group was provided. Use the following format name.group.prefix");
             });
     }
-
 
     /**
      * Maps the routes for the application.

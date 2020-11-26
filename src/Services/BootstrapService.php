@@ -23,7 +23,7 @@ class BootstrapService implements Bootstrapping
         $this->bootstrap = BootstrapCache::get() ?? $this->build();
     }
 
-    public function build() :void
+    public function build(): void
     {
         $this->bootstrap = $this->bootstrap();
     }
@@ -48,7 +48,7 @@ class BootstrapService implements Bootstrapping
         return $this->bootstrap;
     }
 
-    protected function bootstrap() :array
+    protected function bootstrap(): array
     {
         $bootstrap = new Collection();
 
