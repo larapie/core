@@ -24,7 +24,7 @@ class RouteServiceProvider extends ServiceProvider implements Routes
     protected function registerAppRoutes()
     {
         collect($this->bootstrapService()->getRoutes())
-            ->filter(fn($route) => !is_bool($route))
+            ->filter(fn ($route) => !is_bool($route))
             ->each(function (array $route) {
                 if ($route['route_group'] !== null) {
                     $this->mapRoutes($route['route_name'], $route['route_group'], $route['route_prefix'], $route['path']);
@@ -54,7 +54,7 @@ class RouteServiceProvider extends ServiceProvider implements Routes
 
         $middleware = $groups[$group]['middleware'] ?? [];
         $domain = $groups[$group]['domain'] ?? null;
-        $prefix = $this->buildPrefix($groups[$group]['prefix'] ?? null, $subPrefix) . '/' . $name;
+        $prefix = $this->buildPrefix($groups[$group]['prefix'] ?? null, $subPrefix).'/'.$name;
 
         $route = Route::middleware($middleware);
 
@@ -72,7 +72,7 @@ class RouteServiceProvider extends ServiceProvider implements Routes
     protected function buildPrefix(?string $mainPrefix, ?string $subPrefix): ?string
     {
         if (isset($mainPrefix) && isset($subPrefix)) {
-            return $mainPrefix . '/' . $subPrefix;
+            return $mainPrefix.'/'.$subPrefix;
         } elseif (isset($mainPrefix) && !isset($subPrefix)) {
             return $mainPrefix;
         } elseif (!isset($mainPrefix) && isset($subPrefix)) {
@@ -89,7 +89,7 @@ class RouteServiceProvider extends ServiceProvider implements Routes
 
         // If scheme not included, prepend it
         if (!preg_match('#^http(s)?://#', $input)) {
-            $input = 'http://' . $input;
+            $input = 'http://'.$input;
         }
 
         $urlParts = parse_url($input);
