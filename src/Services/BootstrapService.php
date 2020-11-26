@@ -16,38 +16,39 @@ use Larapie\Core\Support\Facades\Larapie;
 
 class BootstrapService implements Bootstrapping
 {
-    protected $bootstrap;
+    protected array $bootstrap;
 
-    protected function boot(bool $fromCache = false)
+    protected function boot()
     {
-        if ($fromCache && ($bootstrap = BootstrapCache::get()) !== null) {
-            $this->bootstrap = $bootstrap;
-        } else {
-            $this->cache();
-        }
+        $this->bootstrap = BootstrapCache::get() ?? $this->build();
+    }
+
+    public function build() :void
+    {
+        $this->bootstrap = $this->bootstrap();
     }
 
     public function cache()
     {
-        $this->bootstrap = $this->bootstrap();
+        $this->build();
         BootstrapCache::put($this->bootstrap);
     }
 
-    protected function isBooted(): bool
+    protected function booted(): bool
     {
         return $this->bootstrap !== null;
     }
 
     public function all(): array
     {
-        if (!$this->isBooted()) {
-            $this->boot(false);
+        if (!$this->booted()) {
+            $this->boot();
         }
 
         return $this->bootstrap;
     }
 
-    protected function bootstrap()
+    protected function bootstrap() :array
     {
         $bootstrap = new Collection();
 

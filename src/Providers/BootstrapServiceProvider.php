@@ -9,22 +9,19 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Larapie\Core\Console\SeedCommand;
 use Larapie\Core\Contracts\Bootstrapping;
-use Larapie\Core\Contracts\Routes;
-use Larapie\Core\Exceptions\BootstrappingFailedException;
 use Larapie\Core\Support\Facades\ModelFactory;
+use Larapie\Core\Traits\BootstrapService;
 
 /**
  * Class BootstrapServiceProvider.
  */
 class BootstrapServiceProvider extends ServiceProvider
 {
-    public function boot()
-    {
-    }
+    use BootstrapService;
 
     public function register()
     {
-        $service = $this->loadService();
+        $service = $this->bootstrapService();
 
         $this->registerConfigs($service->getConfigs());
         $this->registerCommands($service->getCommands());
@@ -33,7 +30,6 @@ class BootstrapServiceProvider extends ServiceProvider
         $this->registerFactories($service->getFactories());
         $this->registerPolicies($service->getModels());
         $this->registerObservers($service->getModels());
-        $this->registerRoutes($service->getRoutes());
 
         /*
          * Override the seed command with the larapi custom one.
@@ -55,17 +51,6 @@ class BootstrapServiceProvider extends ServiceProvider
          *
          */
         $this->registerServiceProviders($service->getProviders());
-    }
-
-    protected function loadService(): Bootstrapping
-    {
-        $service = $this->app->make(Bootstrapping::class);
-
-        if (!($this->app->environment('production'))) {
-            $service->cache();
-        }
-
-        return $service;
     }
 
     protected function registerCommands(array $commands)
@@ -110,32 +95,6 @@ class BootstrapServiceProvider extends ServiceProvider
             })
             ->each(function ($model) {
                 Gate::policy($model['fqn'], $model['policy']);
-            });
-    }
-
-    protected function getRouteProvider(?string $provider): Routes
-    {
-        if ($provider !== null) {
-            return new $provider($this->app);
-        }
-
-        return class_exists($providerClass = config('larapie.routing.provider')) ? new $providerClass($this->app) : new RouteServiceProvider($this->app);
-    }
-
-    protected function registerRoutes(array $routes)
-    {
-        collect($routes)
-            ->filter(function (array $route) {
-                return !is_bool($route);
-            })
-            ->each(function (array $route) {
-                if ($route['route_group'] !== null) {
-                    $this->getRouteProvider($route['route_provider'])->mapRoutes($route['route_name'], $route['route_group'], $route['route_prefix'], $route['path']);
-
-                    return;
-                }
-
-                throw new BootstrappingFailedException("Registering Route < $route > failed. No group was provided. Use the following format name.group.prefix");
             });
     }
 

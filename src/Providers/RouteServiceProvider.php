@@ -5,10 +5,36 @@ namespace Larapie\Core\Providers;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Larapie\Core\Contracts\Routes;
+use Larapie\Core\Exceptions\BootstrappingFailedException;
 use Larapie\Core\Exceptions\InvalidRouteGroupException;
+use Larapie\Core\Traits\BootstrapService;
 
 class RouteServiceProvider extends ServiceProvider implements Routes
 {
+    use BootstrapService;
+
+    public function register()
+    {
+        if(!$this->routesAreCached()){
+           $this->registerAppRoutes($this->bootstrapService()->getRoutes());
+        }
+        parent::register();
+    }
+
+    protected function registerAppRoutes(array $routes)
+    {
+        collect($routes)
+            ->filter(fn($route) => !is_bool($route))
+            ->each(function (array $route) {
+                if ($route['route_group'] !== null) {
+                    $this->mapRoutes($route['route_name'], $route['route_group'], $route['route_prefix'], $route['path']);
+                    return;
+                }
+                throw new BootstrappingFailedException("Registering Route < $route > failed. No group was provided. Use the following format name.group.prefix");
+            });
+    }
+
+
     /**
      * Maps the routes for the application.
      *
