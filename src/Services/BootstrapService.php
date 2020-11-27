@@ -26,7 +26,6 @@ class BootstrapService implements Bootstrapping
         $this->boot();
     }
 
-
     protected function boot()
     {
         $this->bootstrap = BootstrapCache::get() ?? $this->build();
