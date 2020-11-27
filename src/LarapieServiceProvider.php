@@ -52,20 +52,20 @@ class LarapieServiceProvider extends ServiceProvider
 
     public function registerLarapieAlias()
     {
-        $this->app->singleton('larapie', fn() => new LarapieManager());
+        $this->app->singleton('larapie', fn () => new LarapieManager());
         $this->app->alias('larapie', Larapie::class);
     }
 
     public function registerModelFactory()
     {
-        $this->app->singleton('modelfactory', fn() => new FactoryService());
+        $this->app->singleton('modelfactory', fn () => new FactoryService());
         $this->app->alias('modelfactory', ModelFactory::class);
     }
 
     protected function registerConfig()
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/Config/larapie.php',
+            __DIR__.'/Config/larapie.php',
             'larapie'
         );
     }
@@ -73,13 +73,13 @@ class LarapieServiceProvider extends ServiceProvider
     protected function publishConfig()
     {
         $this->publishes([
-            __DIR__ . '/Config/larapie.php' => config_path('larapie.php'),
+            __DIR__.'/Config/larapie.php' => config_path('larapie.php'),
         ]);
     }
 
     protected function registerBootstrapService()
     {
-        $this->app->singleton(Bootstrapping::class, fn() => new BootstrapService());
+        $this->app->singleton(Bootstrapping::class, fn () => new BootstrapService());
     }
 
     protected function registerBootstrapServiceProvider()
