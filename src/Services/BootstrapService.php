@@ -18,6 +18,15 @@ class BootstrapService implements Bootstrapping
 {
     protected array $bootstrap;
 
+    /**
+     * BootstrapService constructor.
+     */
+    public function __construct()
+    {
+        $this->boot();
+    }
+
+
     protected function boot()
     {
         $this->bootstrap = BootstrapCache::get() ?? $this->build();
@@ -36,15 +45,11 @@ class BootstrapService implements Bootstrapping
 
     protected function booted(): bool
     {
-        return $this->bootstrap !== null;
+        return isset($this->bootstrap);
     }
 
     public function all(): array
     {
-        if (!$this->booted()) {
-            $this->boot();
-        }
-
         return $this->bootstrap;
     }
 

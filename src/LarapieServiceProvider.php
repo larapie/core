@@ -52,7 +52,7 @@ class LarapieServiceProvider extends ServiceProvider
 
     public function registerLarapieAlias()
     {
-        app()->singleton('larapie', function () {
+        $this->app->singleton('larapie', function () {
             return new LarapieManager();
         });
 
@@ -61,7 +61,7 @@ class LarapieServiceProvider extends ServiceProvider
 
     public function registerModelFactory()
     {
-        app()->singleton('modelfactory', function () {
+        $this->app->singleton('modelfactory', function () {
             return new FactoryService();
         });
 
