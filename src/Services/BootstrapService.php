@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: arthur
- * Date: 04.10.18
- * Time: 02:13.
- */
 
 namespace Larapie\Core\Services;
 
@@ -16,7 +10,7 @@ use Larapie\Core\Support\Facades\Larapie;
 
 class BootstrapService implements Bootstrapping
 {
-    protected array $bootstrap;
+    protected ?array $bootstrap;
 
     /**
      * BootstrapService constructor.
@@ -28,23 +22,19 @@ class BootstrapService implements Bootstrapping
 
     protected function boot()
     {
-        $this->bootstrap = BootstrapCache::get() ?? $this->build();
+        $result = BootstrapCache::get() ?? $this->build();
+        $this->bootstrap = $result;
     }
 
-    public function build(): void
+    public function build(): array
     {
-        $this->bootstrap = $this->bootstrap();
+        return $this->bootstrap();
     }
 
     public function cache()
     {
         $this->build();
         BootstrapCache::put($this->bootstrap);
-    }
-
-    protected function booted(): bool
-    {
-        return isset($this->bootstrap);
     }
 
     public function all(): array
